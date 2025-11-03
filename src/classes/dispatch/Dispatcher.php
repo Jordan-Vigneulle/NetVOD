@@ -18,6 +18,12 @@ class Dispatcher{
     public function run(){
         $html = "";
         switch($this->action){
+            case 'add-user':
+                $html = (new a\AddUserAction())->execute();
+                break;
+            case 'connexion':
+                $html = (new a\ConnectionUserAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;
@@ -34,7 +40,7 @@ class Dispatcher{
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="src/style/css/style.css">
-        <title>Deefy</title>
+        <title>NetVOD</title>
     </head>
     <body>
         <header>
@@ -42,6 +48,8 @@ class Dispatcher{
             <nav>
                 <ul>
                     <li><a href=".">Accueil</a></li>
+                    <li><a href="?action=add-user">Inscription</a></li>
+                    <li><a href="?action=connexion">Connexion</a></li>
                 </ul>
             </nav>
         </header>
