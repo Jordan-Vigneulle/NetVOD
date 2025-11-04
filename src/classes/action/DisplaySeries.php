@@ -1,5 +1,4 @@
 <?php
-
 namespace iutnc\NetVOD\action;
 
 
@@ -15,9 +14,10 @@ class DisplaySeries extends Action
             $repo = NetVODRepository::getInstance();
             $episodes  = "";
             $titre = "";
-            $episodes = $repo->episodeSeries($_GET['series_id']);
-            $titre = $repo->getTitre($_GET['series_id']);
-            $desc = $repo->getDesc($_GET['series_id']);
+            $intvalserieid = intval($_GET['series_id']);
+            $episodes = $repo->episodeSeries($intvalserieid);
+            $titre = $repo->getTitre($intvalserieid);
+            $desc = $repo->getDesc($intvalserieid);
             $html = "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>$titre</h2>";
             $html .= "<p id='descriptionaction'>$desc</p>";
@@ -36,9 +36,41 @@ class DisplaySeries extends Action
                     }
                     $html .= "</div>";
                     $html .= "</div>";
+
+                $repo = NetVODRepository::getInstance();
+                $commentaires = $repo->getCommentaire($_GET['series_id']);
+                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                    $html .= "<br><br>";
+                    $html .= <<<HTML
+                        <form method="post" action="?action=connexion">
+                        <div id="titleaction">Commentaire</div>
+                        <input type="nom" name="commentaire" placeholder="Commentaire" required>
+                        <input type="submit" value="Publier">
+                         </form>
+                        HTML;
+                }else{
+                    $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_EMAIL);
+                    $repo = NetVODRepository::getInstance();
+                    $repo->addCommentaire($_GET['series_id'], $commentaire,$_SESSION['user']);
+                    $html .= "<div class='message-info'>Commentaire ajouté.</div>";
                 }
+                $html .= "<div class='playlist-container'>";
+                $html .= "<h2 id='titleaction'>Commentaire</h2>";
+                $html .= "<div class='playlist-grid'>";
+                foreach ($commentaires as $commentaire) {
+                    $html .= "<div class='playlist-card'>";
+                    $html .= "<h3>{$commentaire['nomUser']}</h3>";
+                    $html .= "{$commentaire['commentaire']}";
+                    $html .= "</div>";
+                    $html .= "</div>";
+                }
+                $html .= "</div>";
+                $html .= "</div>";
+
+            }
             } else {
                 $html .= "<div class='message-info'>Cette série n'existe pas.</div>";
-            }return $html;
+            }
+        return $html;
         }
 }
