@@ -69,7 +69,7 @@ class NetVODRepository
 
     public function checkUserConnect(string $mail): bool
     {
-        $query = "SELECT * FROM User WHERE email = :mail";
+        $query = "SELECT * FROM Utilisateur WHERE mailUser = :mail";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['mail' => $mail]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
