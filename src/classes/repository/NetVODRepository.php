@@ -145,6 +145,7 @@ class NetVODRepository
 
     public function getSerieFavori($user)
     {
+        $query = "SELECT nomSerie FROM StatutSerie WHERE id = :idSerie";
         return null;
     }
 }
