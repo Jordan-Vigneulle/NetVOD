@@ -24,6 +24,9 @@ class Dispatcher{
             case 'connexion':
                 $html = (new a\ConnectionUserAction())->execute();
                 break;
+            case 'display-catalogue':
+                $html = (new a\DisplayCatalogue())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;
@@ -50,6 +53,7 @@ class Dispatcher{
                     <li><a href=".">Accueil</a></li>
                     <li><a href="?action=add-user">Inscription</a></li>
                     <li><a href="?action=connexion">Connexion</a></li>
+                    <li><a href="?action=display-catalogue">Catalogue</a></li>
                 </ul>
             </nav>
         </header>
