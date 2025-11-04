@@ -27,11 +27,12 @@ class DisplaySeries extends Action
                     foreach ($episodes as $episode) {
                         $id = $episode['codeEpisode'];
                         $html .= "<div class='playlist-card'>";
-                        $html .= "<h3>{$episode['numero']}</h3>";
                         $html .= "<h3>{$episode['titre']}</h3>";
                         $html .= "<h5>{$episode['resume']}</h5>";
                         $html .= "<div class='card-actions'>";
-                        $html .= "<a href='?action=lecture-series&episode={$id}' class='btn-view-playlist'>Lecture</a>";
+                        if(isset($_SESSION['user'])){
+                            $html .= "<a href='?action=lecture-series&episode={$id}' class='btn-view-playlist'>Lecture</a>";
+                        }
                         $html .= "</div>";
                         $html .= "</div>";
                     }
