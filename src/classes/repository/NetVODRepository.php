@@ -128,4 +128,18 @@ class NetVODRepository
         $series = $stmt->fetch();
         return $series['descriptif'];
     }
+
+    public function getInformation($idUser) : array{
+        $query = "SELECT nomUser,prenomUser FROM Utilisateur WHERE mailUser = :idUser";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idUser' => $idUser]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $utilisateur = $stmt->fetch();
+        return $utilisateur;
+    }
+
+    public function getSerieFavori($user)
+    {
+        return null;
+    }
 }
