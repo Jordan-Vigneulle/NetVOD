@@ -2,9 +2,6 @@
 
 namespace iutnc\NetVOD\repository;
 
-use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\audio\tracks\PodcastTrack;
 use PDO;
 use PDOException;
 

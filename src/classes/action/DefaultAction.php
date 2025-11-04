@@ -2,11 +2,12 @@
 namespace iutnc\NetVOD\action;
 
 
+use iutnc\NetVOD\repository\NetVODRepository;
+
 class DefaultAction extends Action{
 
     public function execute(): string
     {
-        session_start();
         $html = "";
         if(isset($_SESSION['user'])){
             $repo = NetVODRepository::getInstance();
@@ -40,14 +41,6 @@ class DefaultAction extends Action{
             return "<div class='message-info'>Bienvenue sur NetVOD</div>";
         }
         return $html;
-//        if(isset($_SESSION['user'])){
-//            $query = prepare(Select titre
-//                             from StatutVideo inner join
-//                            where favori = '1');
-//            $query->execute();
-//
-//        }
-        return "Bienvenue";
     }
 
 
