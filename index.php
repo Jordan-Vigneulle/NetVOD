@@ -4,7 +4,7 @@ use iutnc\NetVOD\dispatch\Dispatcher;
 
 require_once 'vendor/autoload.php';
 
-//iutnc\NetVOD\repository\NetVODRepository::setConfig( 'db.config.ini' );
+iutnc\NetVOD\repository\NetVODRepository::setConfig( 'db.config.ini' );
 // DANGER IL FAUDRA CACHER LE .ini
 
 

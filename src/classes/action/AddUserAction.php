@@ -23,6 +23,8 @@ class AddUserAction extends Action
             return <<<HTML
                 <form method="post" action="?action=add-user">
                     <div id="titleaction">Inscription :</div>
+                    <input type="nom" name="nom" placeholder="Nom" required>
+                    <input type="nom" name="prenom" placeholder="Prénom" required>
                     <input type="email" name="email" placeholder="Email" required>
                     <input type="password" name="password" placeholder="Mot de passe" required>
                     <input type="password" name="password2" placeholder="Répétez le mot de passe" required>

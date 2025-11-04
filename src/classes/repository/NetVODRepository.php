@@ -78,13 +78,18 @@ class NetVODRepository
         }
         return true;
     }
-    public function addUserBD($email, $password) {
+    public function addUserBD($email,$nomuser,$prenomuser, $password,$cartB) {
+        $hashC = password_hash($cartB, PASSWORD_DEFAULT);
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
-        $query = "INSERT INTO User (email, passwd, role) VALUES (:email, :passwd, 1)";
+        $query = "INSERT INTO User (email,nomuser,prenomuser, passwd,hashC, role) VALUES (:email, :passwd, 1)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
             'email' => $email,
+            'nomuser' => $nomuser,
+            'prenomuser' => $prenomuser,
             'passwd' => $hash,
+            'hashC' => $hashC,
+            'role' => 1
         ]);
     }
 
