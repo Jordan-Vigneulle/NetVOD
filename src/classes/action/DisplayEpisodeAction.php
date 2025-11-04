@@ -13,9 +13,10 @@ class DisplayEpisodeAction extends Action
             $var = filter_var($_GET['episode']);
             $validEpisode = intval($var);
             $query = NetVODRepository::getInstance()->getEpisodeSerie($validEpisode);
+            $chemin = "src/video/" .$query;
             $html = <<< HTML
                 <video width="100%" height="100%" controls>
-                <source src="{$query}" type="video/mp4" />
+                <source src="{$chemin}" type="video/mp4"/>
                 </video>
             HTML;
             return $html;
