@@ -1,7 +1,7 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #121212;
-    color: #f4f6f8;
+    color: #00FFED;
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,7 +11,7 @@ body {
 
 header h1 {
     text-align: center;
-    color: #ffffff;
+    color: #00FFED;
     margin: 20px 0 10px;
 }
 
@@ -23,7 +23,7 @@ nav ul {
     background-color: #1e1e1e;
     padding: 15px;
     margin: 0;
-    border-bottom: 3px solid #ffffff;
+    border-bottom: 3px solid #00FFED;
 }
 
 nav li a {
@@ -36,8 +36,8 @@ nav li a {
 }
 
 nav li a:hover {
-    background-color: #ffffff;
-    color: #fff;
+    background-color: #00FFED;
+    color: #00FFED;
 }
 
 main {
@@ -49,7 +49,7 @@ main {
     background: #1e1e1e;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
-    color: #f4f6f8;
+    color: #00FFED
 }
 
 footer {
@@ -58,9 +58,9 @@ footer {
     align-items: center;
     gap: 20px;
     background-color: #1e1e1e;
-    color: #f4f4f4;
+    color: #00FFED;
     padding: 20px 0;
-    border-top: 3px solid #ffffff;
+    border-top: 3px solid #00FFED;
     flex-wrap: wrap;
     margin-top: auto;
 }
@@ -69,7 +69,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    color: #fff;
+    color: #00FFED;
     background-color: #373434;
     padding: 25px;
     border-radius: 10px;
@@ -92,7 +92,7 @@ form input[type="password"],
 form input[type="text"],
 form input[type="file"] {
     padding: 12px 15px;
-    border: 1px solid #ccb4b4;
+    border: 1px solid #00FFED;
     border-radius: 6px;
     font-size: 16px;
     transition: border-color 0.2s;
@@ -102,17 +102,17 @@ form input[type="email"]:focus,
 form input[type="password"]:focus,
 form input[type="text"]:focus,
 form input[type="file"]:focus {
-    border-color: #ffffff;
+    border-color: #00FFED;
     outline: none;
-    box-shadow: 0 0 5px rgba(255, 16, 10, 0.5);
+    box-shadow: 0 0 5px #00FFED;
 }
 
 form input[type="submit"],
 form button,
 
 .btn-view-playlist {
-    background-color: #ffffff;
-    color: #fff;
+    background-color: #009f92;
+    color: #ffffff;
     padding: 12px;
     font-size: 16px;
     font-weight: bold;
@@ -130,8 +130,8 @@ form button,
 }
 
 .btn-delete-playlist {
-    background-color: #ffffff;
-    color: #fff;
+    background-color: #009f92;
+    color: #ffffff;
     padding: 12px;
     font-size: 16px;
     font-weight: bold;
