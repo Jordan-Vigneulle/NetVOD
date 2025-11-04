@@ -12,7 +12,10 @@ class DisplayEpisodeAction extends Action
         if(isset($_SESSION['user'])){
             $var = filter_var($_GET['episode']);
             $validEpisode = intval($var);
-            $query = NetVODRepository::getInstance()->getEpisodeSerie($validEpisode);
+            $r = NetVODRepository::getInstance();
+            $query = $r->getEpisodeSerie($validEpisode);
+            $idSerie = $_GET['series_id'];
+            $r->setSerieEnCours($idSerie,$_SESSION['user']);
             $chemin = "src/video/" .$query;
             $html = <<< HTML
                 <video width="100%" height="100%" controls>

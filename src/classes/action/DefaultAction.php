@@ -13,16 +13,16 @@ class DefaultAction extends Action{
             $repo = NetVODRepository::getInstance();
             $user = $repo->getInformation($_SESSION['user']);
             $series = $repo->getSerieFavori($_SESSION['user']);
+            $seriesEncours = $repo->getSerieEnCours($_SESSION['user']);
             $prenom = $user['nomUser'];
             $html .= "<div class='message-info'>Ravi de vous revoir $prenom</div>";
-            if(empty($series)){
-                $html .= "<div class='message-info'>Vous n'avez pas encore de série préféré ? Qu'attendez vous !</div>";
-                return $html;
-            }
             $html .= "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>Vos séries préférées</h2>";
             $html .= "<div class='playlist-grid'>";
-            foreach ($series as $cat) {
+            if(empty($series)){
+                $html .= "<div class='message-info'>Vous n'avez pas encore de série préféré ? Qu'attendez vous !</div>";
+            }else{
+                foreach ($series as $cat) {
                 $html .= "<div class='playlist-card'>";
                 $html .= "<h3>{$cat['titre']}</h3>";
                 $html .= "<div class='card-actions'>";
@@ -32,6 +32,24 @@ class DefaultAction extends Action{
             }
             $html .= "</div>";
             $html .= "</div>";
+            }
+            $html .= "<div class='playlist-container'>";
+            $html .= "<h2 id='titleaction'>Vos séries en cours</h2>";
+            if(empty($seriesEnCours)){
+                $html .= "<div class='message-info'>Vous n'avez pas encore de série en cours ? Qu'attendez vous !</div>";
+            }else{
+                $html .= "<div class='playlist-grid'>";
+                foreach ($seriesEnCours as $cat2) {
+                $html .= "<div class='playlist-card'>";
+                $html .= "<h3>{$cat2['titre']}</h3>";
+                $html .= "<div class='card-actions'>";
+                $html .= "<a href='?action=display-series&series_id={$cat2['id']}' class='btn-view-playlist'>Direction episode</a>";
+                $html .= "</div>";
+                $html .= "</div>";
+            }
+            $html .= "</div>";
+            $html .= "</div>";
+            }
         }else{
             return "<div class='message-info'>Bienvenue sur NetVOD</div>";
         }
