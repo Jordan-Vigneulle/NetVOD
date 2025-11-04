@@ -58,11 +58,13 @@ class DisplaySeries extends Action
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
                 $html .= "<div class='playlist-grid'>";
                 foreach ($commentaires as $commentaire) {
+                    if(!empty($commentaire['commentaire'])){
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$commentaire['nomUser']}</h3>";
                     $html .= "{$commentaire['commentaire']}";
                     $html .= "</div>";
                     $html .= "</div>";
+                    }
                 }
                 $html .= "</div>";
                 $html .= "</div>";
