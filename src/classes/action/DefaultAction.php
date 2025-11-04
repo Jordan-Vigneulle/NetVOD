@@ -23,7 +23,6 @@ class DefaultAction extends Action{
             $html .= "<h2 id='titleaction'>Vos séries préférées</h2>";
             $html .= "<div class='playlist-grid'>";
             foreach ($series as $cat) {
-                $id = $cat['id'];
                 $html .= "<div class='playlist-card'>";
                 $html .= "<h3>{$cat['titre']}</h3>";
                 $html .= "<div class='card-actions'>";
