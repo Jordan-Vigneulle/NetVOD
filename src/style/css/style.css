@@ -109,11 +109,26 @@ form input[type="file"]:focus {
 
 form input[type="submit"],
 form button,
+
 .btn-view-playlist {
     background-color: #ff0800;
     color: #fff;
     padding: 12px;
-    font-size: 16px;
+    font-size: 100px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-fav{
+    background-color: #e88916;
+    color: #fff;
+    padding: 12px;
+    font-size: 10px;
     font-weight: bold;
     border: none;
     border-radius: 6px;
