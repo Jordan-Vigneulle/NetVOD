@@ -21,8 +21,8 @@ class DisplayCatalogue extends Action{
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$cat['titre']}</h3>";
                     $html .= "<div class='card-actions'>";
-                    $html .= "<a href='?action=display-catalogue&playlist_id={$id}' class='btn-view-playlist'>Lecture</a>";
-                    if($_SESSION['user']){
+                    $html .= "<a href='?action=display-series&playlist_id={$id}' class='btn-view-playlist'>Lecture</a>";
+                    if(isset($_SESSION['user'])){
                         $html .= "<br><br>";
                         $html .= "<a href='' class='btn-fav'>Mettre en favori</a>";
                     }
