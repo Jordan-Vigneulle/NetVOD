@@ -15,7 +15,7 @@ class AddUserAction extends Action
 {
     public function execute(): string
     {
-        session_start();
+
         if(isset($_SESSION['user'])){
             return "<div class='message-info'>Vous êtes déjà connecté</div>";
         }
