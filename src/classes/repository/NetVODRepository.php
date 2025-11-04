@@ -2,11 +2,7 @@
 
 namespace iutnc\NetVOD\repository;
 
-use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\audio\tracks\PodcastTrack;
 use PDO;
-use PDOException;
 
 class NetVODRepository
 {
@@ -16,8 +12,7 @@ class NetVODRepository
 
     private function __construct(array $conf)
     {
-        $this->pdo = new \PDO($conf['dsn'], $conf['user'], $conf['pass'],
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new \PDO($conf['dsn'], $conf['user'], $conf['pass'], [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
 
     public static function getInstance()
@@ -69,7 +64,7 @@ class NetVODRepository
 
     public function checkUserConnect(string $mail): bool
     {
-        $query = "SELECT * FROM User WHERE email = :mail";
+        $query = "SELECT * FROM Utilisateur WHERE mailUser = :mail";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['mail' => $mail]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -218,7 +213,6 @@ class NetVODRepository
         }else{
             $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = ?";
             $stmt = $this->pdo->prepare($update);
-            $stmt->bindParam(1,$commentaire);
             $stmt->execute();
         }
 
