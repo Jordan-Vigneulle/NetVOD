@@ -42,7 +42,7 @@ class DisplaySeries extends Action
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $html .= "<br><br>";
                     $html .= <<<HTML
-                        <form method="post" action="?action=connexion">
+                        <form method="post" action="?action=display-series&series_id=${intvalserieid}">
                         <div id="titleaction">Commentaire</div>
                         <input type="nom" name="commentaire" placeholder="Commentaire" required>
                         <input type="submit" value="Publier">
@@ -51,18 +51,20 @@ class DisplaySeries extends Action
                 }else{
                     $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_EMAIL);
                     $repo = NetVODRepository::getInstance();
-                    $repo->addCommentaire($_GET['series_id'], $commentaire,$_SESSION['user']);
+                    $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user']);
                     $html .= "<div class='message-info'>Commentaire ajouté.</div>";
                 }
                 $html .= "<div class='playlist-container'>";
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
                 $html .= "<div class='playlist-grid'>";
                 foreach ($commentaires as $commentaire) {
+                    if(!empty($commentaire['commentaire'])){
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$commentaire['nomUser']}</h3>";
                     $html .= "{$commentaire['commentaire']}";
                     $html .= "</div>";
                     $html .= "</div>";
+                    }
                 }
                 $html .= "</div>";
                 $html .= "</div>";

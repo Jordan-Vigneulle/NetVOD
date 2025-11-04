@@ -238,6 +238,27 @@ class NetVODRepository
         }
         return $data;
     }
+
+    public function addCommentaire($series_id, $commentaire, $user)
+    {
+        $query = "SELECT COUNT(*) FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id_serie' => $series_id, 'user' => $user]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $commentaires = $stmt->fetchAll();
+        if(empty($commentaires)){
+            $query2 = "INSERT INTO StatutSerie (id,mailUser,commentaire)VALUES(:serieid,:mailuser,:commentaire)";
+            $stmt2 = $this->pdo->prepare($query2);
+            $stmt2->execute(['serieid' => $series_id, 'mailuser' => $user, 'commentaire' => $commentaire]);
+            $stmt2->execute();
+        }else{
+            $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = ?";
+            $stmt = $this->pdo->prepare($update);
+            $stmt->bindParam(1,$commentaire);
+            $stmt->execute();
+        }
+
+    }
 }
 
 
