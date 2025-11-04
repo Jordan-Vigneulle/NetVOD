@@ -289,3 +289,9 @@ footer p {
     font-size: 0.9em;
     color: #b3b3b3;
 }
+
+#logo {
+    display: block;       
+    margin: 0 auto;      
+    width: 200px; 
+}

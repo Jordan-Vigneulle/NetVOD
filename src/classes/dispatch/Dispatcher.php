@@ -50,7 +50,7 @@ class Dispatcher{
     </head>
     <body>
         <header>
-            <a href="." id="none"><h1>NetVOD</h1></a>
+            <a href="." id="none"><img id="logo" src="src\style\img\logo.png" alt="NetVOD"</a>
             <nav>
                 <ul>
                     <li><a href=".">Accueil</a></li>
