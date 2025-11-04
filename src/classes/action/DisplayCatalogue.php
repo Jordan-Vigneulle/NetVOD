@@ -12,8 +12,7 @@ class DisplayCatalogue extends Action{
         session_start();
             $repo = NetVODRepository::getInstance();
             $catalogue = $repo->catalogueVOD();
-            $html = '<link rel="stylesheet" href="src/style/css/style.css">';
-            $html .= "<div class='playlist-container'>";
+            $html = "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>Catalogue</h2>";
                 $html .= "<div class='playlist-grid'>";
                 foreach ($catalogue as $cat) {
@@ -21,10 +20,10 @@ class DisplayCatalogue extends Action{
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$cat['titre']}</h3>";
                     $html .= "<div class='card-actions'>";
-                    $html .= "<a href='?action=display-series&playlist_id={$id}' class='btn-view-playlist'>Lecture</a>";
+                    $html .= "<a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>";
                     if(isset($_SESSION['user'])){
                         $html .= "<br><br>";
-                        $html .= "<a href='' class='btn-fav'>Mettre en favori</a>";
+                        $html .= "<a href='' class='btn-view-playlist'>Mettre en favori</a>";
                     }
                     $html .= "</div>";
                     $html .= "</div>";

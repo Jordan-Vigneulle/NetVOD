@@ -5,34 +5,41 @@ namespace iutnc\NetVOD\action;
 
 use iutnc\NetVOD\repository\NetVODRepository;
 
-class DisplaySeries extends Action{
+class DisplaySeries extends Action
+{
 
     public function execute(): string
     {
         session_start();
-        $repo = NetVODRepository::getInstance();
-        $catalogue = $repo->catalogueVOD();
-        $html = '<link rel="stylesheet" href="src/style/css/style.css">';
-        $html .= "<div class='playlist-container'>";
-        $html .= "<h2 id='titleaction'>Catalogue</h2>";
-        $html .= "<div class='playlist-grid'>";
-        foreach ($catalogue as $cat) {
-            $id = $cat['id'];
-            $html .= "<div class='playlist-card'>";
-            $html .= "<h3>{$cat['titre']}</h3>";
-            $html .= "<div class='card-actions'>";
-            $html .= "<a href='?action=display-series&playlist_id={$id}' class='btn-view-playlist'>Lecture</a>";
-            if($_SESSION['user']){
-                $html .= "<br><br>";
-                $html .= "<a href='' class='btn-fav'>Mettre en favori</a>";
-            }
-            $html .= "</div>";
-            $html .= "</div>";
+        $html ="";
+        if (isset($_GET['series_id'])) {
+            $repo = NetVODRepository::getInstance();
+            $episodes  = "";
+            $titre = "";
+            $episodes = $repo->episodeSeries($_GET['series_id']);
+            $titre = $repo->getTitre($_GET['series_id']);
+            $desc = $repo->getDesc($_GET['series_id']);
+            $html = "<div class='playlist-container'>";
+            $html .= "<h2 id='titleaction'>$titre</h2>";
+            $html .= "<p id='descriptionaction'>$desc</p>";
+            $html .= "<div class='playlist-grid'>";
+            if ($episodes) {
+                    foreach ($episodes as $episode) {
+                        $id = $episode['codeEpisode'];
+                        $html .= "<div class='playlist-card'>";
+                        $html .= "<h3>{$episode['numero']}</h3>";
+                        $html .= "<h3>{$episode['titre']}</h3>";
+                        $html .= "<h5>{$episode['resume']}</h5>";
+                        $html .= "<div class='card-actions'>";
+                        $html .= "<a href='?action=lecture-series&episode={$id}' class='btn-view-playlist'>Lecture</a>";
+                        $html .= "</div>";
+                        $html .= "</div>";
+                    }
+                    $html .= "</div>";
+                    $html .= "</div>";
+                }
+            } else {
+                $html .= "<div class='message-info'>Cette série n'existe pas.</div>";
+            }return $html;
         }
-        $html .= "</div>";
-        $html .= "</div>";
-        return $html;
-    }
-
-
 }

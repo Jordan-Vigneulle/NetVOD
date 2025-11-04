@@ -99,4 +99,33 @@ class NetVODRepository
         $series = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $series;
     }
+
+    public function episodeSeries($series_id)
+    {
+        $query = "SELECT * FROM episode WHERE serie_id = :idSerie";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idSerie' => $series_id]);
+        $episodes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $episodes;
+    }
+
+    public function getTitre($series_id)
+    {
+        $query = "SELECT titre FROM serie WHERE id = :idSerie";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idSerie' => $series_id]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $series = $stmt->fetch();
+        return $series['titre'];
+    }
+
+    public function getDesc($series_id)
+    {
+        $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idSerie' => $series_id]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $series = $stmt->fetch();
+        return $series['descriptif'];
+    }
 }
