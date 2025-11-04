@@ -36,9 +36,26 @@ class DisplaySeries extends Action
                     }
                     $html .= "</div>";
                     $html .= "</div>";
+
+                $repo = NetVODRepository::getInstance();
+                $commentaires = $repo->getCommentaire($_GET['series_id']);
+                $html .= "<div class='playlist-container'>";
+                $html .= "<h2 id='titleaction'>Commentaire</h2>";
+                $html .= "<div class='playlist-grid'>";
+                foreach ($commentaires as $commentaire) {
+                    $id = $commentaire['prenomUser'];
+                    $html .= "<div class='playlist-card'>";
+                    $html .= "<h3>{$commentaire['commentaire']}</h3>";
+                    $html .= "</div>";
+                    $html .= "</div>";
                 }
+                $html .= "</div>";
+                $html .= "</div>";
+
+            }
             } else {
                 $html .= "<div class='message-info'>Cette série n'existe pas.</div>";
-            }return $html;
+            }
+        return $html;
         }
 }
