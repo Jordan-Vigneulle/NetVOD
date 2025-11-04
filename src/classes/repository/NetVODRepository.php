@@ -44,7 +44,7 @@ class NetVODRepository
         ];
     }
     public function getHashUser(string $mail) : string{
-        $query = "SELECT passwd FROM User WHERE email = :email";
+        $query = "SELECT passwd FROM Utilisateur WHERE mailUser = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $mail]);
         $hash = $stmt->fetchColumn();
@@ -69,7 +69,7 @@ class NetVODRepository
 
     public function checkUserConnect(string $mail): bool
     {
-        $query = "SELECT * FROM Utilisateur WHERE email = :mail";
+        $query = "SELECT * FROM Utilisateur WHERE mailUser = :mail";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['mail' => $mail]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,15 +81,14 @@ class NetVODRepository
     public function addUserBD($email,$nomuser,$prenomuser, $password,$cartB) {
         $hashC = password_hash($cartB, PASSWORD_DEFAULT);
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
-        $query = "INSERT INTO Utilisateur (email,nomUser,prenomUser, passwd,card, role) VALUES (:email, :nomuser,:prenomuser,:hashC, :passwd, 1)";
+        $query = "INSERT INTO Utilisateur (mailUser,nomUser,prenomUser,passwd,numeroCarte, role) VALUES (:email, :nomuser,:prenomuser,:passwd,:hashC,1)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
             'email' => $email,
             'nomuser' => $nomuser,
             'prenomuser' => $prenomuser,
             'passwd' => $hash,
-            'hashC' => $hashC,
-            'role' => 1
+            'hashC' => $hashC
         ]);
     }
 
