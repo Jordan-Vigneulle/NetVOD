@@ -159,11 +159,11 @@ class NetVODRepository
 
     public function getSerieFavori($user)
     {
-        $query = "SELECT titre FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = :mail and favori = 1";
+        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = :mail and favori = 1";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['mail' => $user]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $data['titre'];
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
     }
 
     public function getCommentaire($id_serie) : array{

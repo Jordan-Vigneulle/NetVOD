@@ -26,11 +26,7 @@ class DefaultAction extends Action{
                 $html .= "<div class='playlist-card'>";
                 $html .= "<h3>{$cat['titre']}</h3>";
                 $html .= "<div class='card-actions'>";
-                $html .= "<a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>";
-                if(isset($_SESSION['user'])){
-                    $html .= "<br><br>";
-                    $html .= "<a href='' class='btn-view-playlist'>Mettre en favori</a>";
-                }
+                $html .= "<a href='?action=display-series&series_id={$cat['id']}' class='btn-view-playlist'>Direction episode</a>";
                 $html .= "</div>";
                 $html .= "</div>";
             }
