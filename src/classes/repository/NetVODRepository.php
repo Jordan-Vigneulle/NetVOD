@@ -89,6 +89,8 @@ class NetVODRepository
         ]);
     }
 
+// ----------------------------------  Table série ----------------------------------
+
     public function catalogueVOD() : array{
         $query = "SELECT * FROM serie";
         $stmt = $this->pdo->prepare($query);
@@ -97,16 +99,17 @@ class NetVODRepository
         return $series;
     }
 
-    public function episodeSeries($series_id)
+    public function getDesc($series_id): string
     {
-        $query = "SELECT * FROM episode WHERE serie_id = :idSerie";
+        $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idSerie' => $series_id]);
-        $episodes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return $episodes;
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $series = $stmt->fetch();
+        return $series['descriptif'];
     }
 
-    public function getTitre($series_id)
+    public function getTitre($series_id): string
     {
         $query = "SELECT titre FROM serie WHERE id = :idSerie";
         $stmt = $this->pdo->prepare($query);
@@ -116,14 +119,16 @@ class NetVODRepository
         return $series['titre'];
     }
 
-    public function getDesc($series_id)
+
+// ----------------------------------  Table épisode ----------------------------------
+
+    public function episodeSeries($series_id): array
     {
-        $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
+        $query = "SELECT * FROM episode WHERE serie_id = :idSerie";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idSerie' => $series_id]);
-        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
-        $series = $stmt->fetch();
-        return $series['descriptif'];
+        $episodes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $episodes;
     }
 
     public function getEpisodeSerie(int $idEpisode){
@@ -134,6 +139,10 @@ class NetVODRepository
         return $series['file'];
     }
 
+
+
+// ----------------------------------  Table utilisateur ----------------------------------
+
     public function getInformation($idUser) : array{
         $query = "SELECT nomUser,prenomUser FROM Utilisateur WHERE mailUser = :idUser";
         $stmt = $this->pdo->prepare($query);
@@ -143,10 +152,7 @@ class NetVODRepository
         return $utilisateur;
     }
 
-    public function getSerieFavori($user)
-    {
-        return null;
-    }
+// ----------------------------------  Table statutSerie ----------------------------------
 
     public function getCommentaire($id_serie) : array{
         $query = "SELECT nomUser,commentaire FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
@@ -157,3 +163,5 @@ class NetVODRepository
         return $commentaires;
     }
 }
+
+
