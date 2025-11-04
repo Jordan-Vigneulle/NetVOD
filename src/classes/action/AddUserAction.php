@@ -25,10 +25,10 @@ class AddUserAction extends Action
                     <div id="titleaction">Inscription :</div>
                     <input type="nom" name="nom" placeholder="Nom" required>
                     <input type="nom" name="prenom" placeholder="Prénom" required>
-                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="email" name="email" placeholder="Adresse mail" required>
                     <input type="password" name="password" placeholder="Mot de passe" required>
-                    <input type="password" name="password2" placeholder="Répétez le mot de passe" required>
-                    <input type="nom" name="carteB" placeholder="Carte Bleu" required>
+                    <input type="password" name="password2" placeholder="Confirmez votre mot de passe" required>
+                    <input type="nom" name="carteB" placeholder="Numéro de Carte Bleue" required>
                     <input type="submit" value="Ajouter l'utilisateur">
                 </form>
             HTML;
