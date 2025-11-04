@@ -152,6 +152,9 @@ class NetVODRepository
         return $utilisateur;
     }
 
+
+// ----------------------------------  Table statutSerie ----------------------------------
+
     public function getSerieFavori($user)
     {
         $query = "SELECT titre FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = :mail and favori = 1";
