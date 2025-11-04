@@ -156,7 +156,7 @@ class NetVODRepository
 
 // ----------------------------------  Table statutSerie ----------------------------------
 
-    public function getSerieFavori($user)
+    public function getSerieFavori(string $user): array
     {
         $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = :mail and favori = 1";
         $stmt = $this->pdo->prepare($query);
@@ -165,7 +165,7 @@ class NetVODRepository
         return $data;
     }
 
-    public function getCommentaire($id_serie) : array{
+    public function getCommentaire(int $id_serie) : array{
         $query = "SELECT nomUser,commentaire FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id_serie' => $id_serie]);
@@ -184,7 +184,7 @@ class NetVODRepository
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
-            if($res = 0){
+            if($res === '0'){
                 $stmt2 = $this->pdo->prepare($query);
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
@@ -197,6 +197,43 @@ class NetVODRepository
                 return $stmt->rowCount() > 0;
             }
         }
+
+        public function setSerieEnCours(int $idSerie,string $email): bool{
+            $query = "INSERT INTO StatutSerie (id,mailUser,statut)VALUES(?,?,'en cours')";
+            $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ?";
+
+            $stmt = $this->pdo->prepare($test);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->execute();
+            $res = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+            if($res === '0'){
+                $stmt2 = $this->pdo->prepare($query);
+                $stmt2->bindParam(1,$idSerie);
+                $stmt2->bindParam(2,$email);
+                $stmt2->execute();
+                return $stmt->rowCount() > 0;
+            }else{
+                $stmt3 = $this->pdo->prepare($update);
+                $stmt3->bindParam(1,$idSerie);
+                $stmt3->execute();
+                return $stmt->rowCount() > 0;
+            }
+        }
+
+        public function getSerieEnCours(string $user): ?array
+    {
+        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = ? and statut = 'en cours'";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(1,$user);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data;
+    }
 
     public function addCommentaire($series_id, $commentaire, $user)
     {
