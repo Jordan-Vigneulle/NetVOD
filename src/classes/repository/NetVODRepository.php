@@ -64,6 +64,8 @@ class NetVODRepository
         return $this->pdo;
     }
 
+    // ----------------------------------  Gestion de la connection ----------------------------------
+
     public function checkUserConnect(string $mail): bool
     {
         $query = "SELECT * FROM Utilisateur WHERE mailUser = :mail";
