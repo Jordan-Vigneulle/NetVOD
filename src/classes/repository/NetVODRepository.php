@@ -112,13 +112,16 @@ class NetVODRepository
         return $series['descriptif'];
     }
 
-    public function getTitre($series_id): string
+    public function getTitre($series_id): ?string
     {
         $query = "SELECT titre FROM serie WHERE id = :idSerie";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idSerie' => $series_id]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $series = $stmt->fetch();
+        if(!$series){
+            return null;
+        }
         return $series['titre'];
     }
 
@@ -174,6 +177,30 @@ class NetVODRepository
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $commentaires = $stmt->fetchAll();
         return $commentaires;
+    }
+
+    public function setSerieFavoris(int $idSerie,string $email): bool{
+        $query = "INSERT INTO StatutSerie (id,mailUser,favori)VALUES(?,?,1)";
+        $update = "UPDATE StatutSerie SET favori = 1 WHERE id = ?";
+        $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ?";
+
+        $stmt = $this->pdo->prepare($test);
+        $stmt->bindParam(1,$idSerie);
+        $stmt->execute();
+        $res = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+        if($res = 1){
+            $stmt2 = $this->pdo->prepare($query);
+            $stmt2->bindParam(1,$idSerie);
+            $stmt2->bindParam(2,$email);
+            $stmt2->execute();
+            return $stmt->rowCount() > 0;
+        }else{
+            $stmt3 = $this->pdo->prepare($update);
+            $stmt3->bindParam(1,$idSerie);
+            $stmt3->execute();
+            return $stmt->rowCount() > 0;
+        }
     }
 }
 
