@@ -189,7 +189,7 @@ class NetVODRepository
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
-            if($res = 0){
+            if($res === '0'){
                 $stmt2 = $this->pdo->prepare($query);
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
@@ -213,7 +213,7 @@ class NetVODRepository
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
-            if($res = 0){
+            if($res === '0'){
                 $stmt2 = $this->pdo->prepare($query);
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
@@ -232,6 +232,7 @@ class NetVODRepository
         $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = ? and statut = 'en cours'";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(1,$user);
+        $stmt->execute();
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         if(!$data){
             return null;
