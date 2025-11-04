@@ -2,9 +2,6 @@
 
 namespace iutnc\NetVOD\repository;
 
-use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\audio\tracks\PodcastTrack;
 use PDO;
 use PDOException;
 
@@ -127,5 +124,27 @@ class NetVODRepository
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $series = $stmt->fetch();
         return $series['descriptif'];
+    }
+
+    public function getEpisodeSerie(int $idEpisode){
+        $query = "SELECT file FROM episode WHERE codeEpisode = :idEpisode";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idEpisode' => $idEpisode]);
+        $series = $stmt->fetch();
+        return $series['file'];
+    }
+
+    public function getInformation($idUser) : array{
+        $query = "SELECT nomUser,prenomUser FROM Utilisateur WHERE mailUser = :idUser";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idUser' => $idUser]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $utilisateur = $stmt->fetch();
+        return $utilisateur;
+    }
+
+    public function getSerieFavori($user)
+    {
+        return null;
     }
 }

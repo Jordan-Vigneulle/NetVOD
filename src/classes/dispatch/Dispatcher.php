@@ -30,6 +30,9 @@ class Dispatcher{
             case 'display-series':
                 $html = (new a\DisplaySeries())->execute();
                 break;
+            case 'lecture-series':
+                $html = (new a\DisplayEpisodeAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;

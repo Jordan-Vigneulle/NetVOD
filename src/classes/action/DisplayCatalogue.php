@@ -9,7 +9,7 @@ class DisplayCatalogue extends Action{
 
     public function execute(): string
     {
-        session_start();
+
             $repo = NetVODRepository::getInstance();
             $catalogue = $repo->catalogueVOD();
             $html = "<div class='playlist-container'>";

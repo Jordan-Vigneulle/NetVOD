@@ -10,7 +10,6 @@ class DisplaySeries extends Action
 
     public function execute(): string
     {
-        session_start();
         $html ="";
         if (isset($_GET['series_id'])) {
             $repo = NetVODRepository::getInstance();
@@ -27,12 +26,11 @@ class DisplaySeries extends Action
                     foreach ($episodes as $episode) {
                         $id = $episode['codeEpisode'];
                         $html .= "<div class='playlist-card'>";
+                        $html .= "<h3>{$episode['numero']}</h3>";
                         $html .= "<h3>{$episode['titre']}</h3>";
                         $html .= "<h5>{$episode['resume']}</h5>";
                         $html .= "<div class='card-actions'>";
-                        if(isset($_SESSION['user'])){
-                            $html .= "<a href='?action=lecture-series&episode={$id}' class='btn-view-playlist'>Lecture</a>";
-                        }
+                        $html .= "<a href='?action=lecture-series&episode={$id}' class='btn-view-playlist'>Lecture</a>";
                         $html .= "</div>";
                         $html .= "</div>";
                     }
