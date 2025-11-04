@@ -1,5 +1,4 @@
 <?php
-
 namespace iutnc\NetVOD\action;
 
 
@@ -15,9 +14,10 @@ class DisplaySeries extends Action
             $repo = NetVODRepository::getInstance();
             $episodes  = "";
             $titre = "";
-            $episodes = $repo->episodeSeries($_GET['series_id']);
-            $titre = $repo->getTitre($_GET['series_id']);
-            $desc = $repo->getDesc($_GET['series_id']);
+            $intvalserieid = intval($_GET['series_id']);
+            $episodes = $repo->episodeSeries($intvalserieid);
+            $titre = $repo->getTitre($intvalserieid);
+            $desc = $repo->getDesc($intvalserieid);
             $html = "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>$titre</h2>";
             $html .= "<p id='descriptionaction'>$desc</p>";
@@ -43,9 +43,9 @@ class DisplaySeries extends Action
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
                 $html .= "<div class='playlist-grid'>";
                 foreach ($commentaires as $commentaire) {
-                    $id = $commentaire['prenomUser'];
                     $html .= "<div class='playlist-card'>";
-                    $html .= "<h3>{$commentaire['commentaire']}</h3>";
+                    $html .= "<h3>{$commentaire['nomUser']}</h3>";
+                    $html .= "{$commentaire['commentaire']}";
                     $html .= "</div>";
                     $html .= "</div>";
                 }
