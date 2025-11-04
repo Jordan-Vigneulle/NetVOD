@@ -40,7 +40,8 @@ class DisplaySeries extends Action
                 $repo = NetVODRepository::getInstance();
                 $commentaires = $repo->getCommentaire($_GET['series_id']);
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                    return <<<HTML
+                    $html .= "<br><br>";
+                    $html .= <<<HTML
                         <form method="post" action="?action=connexion">
                         <div id="titleaction">Commentaire</div>
                         <input type="nom" name="commentaire" placeholder="Commentaire" required>
@@ -51,7 +52,7 @@ class DisplaySeries extends Action
                     $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_EMAIL);
                     $repo = NetVODRepository::getInstance();
                     $repo->addCommentaire($_GET['series_id'], $commentaire,$_SESSION['user']);
-                    return "<div class='message-info'>Commentaire ajouté.</div>";
+                    $html .= "<div class='message-info'>Commentaire ajouté.</div>";
                 }
                 $html .= "<div class='playlist-container'>";
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
