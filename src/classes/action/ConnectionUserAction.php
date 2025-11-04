@@ -13,7 +13,7 @@ class ConnectionUserAction extends Action {
 
     public function execute(): string
     {
-        session_start();
+
         // vérification si l'utilisateur est déjà connecté
         if(!isset($_SESSION['user'])){
             // Pas connecté

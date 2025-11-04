@@ -128,4 +128,12 @@ class NetVODRepository
         $series = $stmt->fetch();
         return $series['descriptif'];
     }
+
+    public function getEpisodeSerie(int $idEpisode){
+        $query = "SELECT file FROM episode WHERE codeEpisode = :idEpisode";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idEpisode' => $idEpisode]);
+        $series = $stmt->fetch();
+        return $series['file'];
+    }
 }

@@ -6,7 +6,14 @@ class DefaultAction extends Action{
 
     public function execute(): string
     {
-        return 'Bienvenue !';
+//        if(isset($_SESSION['user'])){
+//            $query = prepare(Select titre
+//                             from StatutVideo inner join
+//                            where favori = '1');
+//            $query->execute();
+//
+//        }
+        return "Bienvenue";
     }
 
 

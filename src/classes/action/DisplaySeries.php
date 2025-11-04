@@ -10,7 +10,6 @@ class DisplaySeries extends Action
 
     public function execute(): string
     {
-        session_start();
         $html ="";
         if (isset($_GET['series_id'])) {
             $repo = NetVODRepository::getInstance();
