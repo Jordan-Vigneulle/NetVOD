@@ -57,7 +57,6 @@ class Dispatcher{
                     <li><a href="?action=add-user">Inscription</a></li>
                     <li><a href="?action=connexion">Connexion</a></li>
                     <li><a href="?action=display-catalogue">Catalogue</a></li>
-                    <li><a href="?action=display-series">Catalogue</a></li>
                 </ul>
             </nav>
         </header>
