@@ -92,4 +92,11 @@ class NetVODRepository
         ]);
     }
 
+    public function catalogueVOD() : array{
+        $query = "SELECT * FROM serie";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $series = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $series;
+    }
 }
