@@ -28,6 +28,7 @@ class AddUserAction extends Action
                     <input type="email" name="email" placeholder="Email" required>
                     <input type="password" name="password" placeholder="Mot de passe" required>
                     <input type="password" name="password2" placeholder="Répétez le mot de passe" required>
+                    <input type="nom" name="carteB" placeholder="Carte Bleu" required>
                     <input type="submit" value="Ajouter l'utilisateur">
                 </form>
             HTML;

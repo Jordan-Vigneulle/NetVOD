@@ -17,13 +17,13 @@ class AuthProvider {
 
     public static function register(): string
     {
-        if (!isset($_POST['email'],$_POST['nomU'],$_POST['prenomU'], $_POST['password'], $_POST['carteB'], $_POST['password2'])) {
+        if (!isset($_POST['email'],$_POST['nom'],$_POST['prenom'], $_POST['password'], $_POST['carteB'], $_POST['password2'])) {
             return "<div class='message-info'>Manque de données.</div>";
         }
 
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-        $prenom = filter_var($_POST['prenomU'], FILTER_SANITIZE_STRING);
-        $nom = filter_var($_POST['nomU'], FILTER_SANITIZE_STRING);
+        $prenom = filter_var($_POST['prenom'], FILTER_SANITIZE_STRING);
+        $nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
 
         if ($_POST['password'] !== $_POST['password2']) {
             return "<div class='message-info'>Les Mot de passe ne corresponds pas.</div>";

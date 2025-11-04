@@ -69,7 +69,7 @@ class NetVODRepository
 
     public function checkUserConnect(string $mail): bool
     {
-        $query = "SELECT * FROM User WHERE email = :mail";
+        $query = "SELECT * FROM Utilisateur WHERE email = :mail";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['mail' => $mail]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,7 +81,7 @@ class NetVODRepository
     public function addUserBD($email,$nomuser,$prenomuser, $password,$cartB) {
         $hashC = password_hash($cartB, PASSWORD_DEFAULT);
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
-        $query = "INSERT INTO User (email,nomuser,prenomuser, passwd,hashC, role) VALUES (:email, :passwd, 1)";
+        $query = "INSERT INTO Utilisateur (email,nomUser,prenomUser, passwd,card, role) VALUES (:email, :nomuser,:prenomuser,:hashC, :passwd, 1)";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([
             'email' => $email,
