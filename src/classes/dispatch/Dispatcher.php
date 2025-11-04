@@ -33,6 +33,9 @@ class Dispatcher{
             case 'lecture-series':
                 $html = (new a\DisplayEpisodeAction())->execute();
                 break;
+            case 'ajouterFavoris':
+                $html = (new a\AddFavorisAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;

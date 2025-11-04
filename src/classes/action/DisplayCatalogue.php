@@ -23,7 +23,7 @@ class DisplayCatalogue extends Action{
                     $html .= "<a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>";
                     if(isset($_SESSION['user'])){
                         $html .= "<br><br>";
-                        $html .= "<a href='' class='btn-view-playlist'>Mettre en favori</a>";
+                        $html .= "<a href='?action=ajouterFavoris&series_id={$id}' class='btn-view-playlist'>Mettre en favori</a>";
                     }
                     $html .= "</div>";
                     $html .= "</div>";
