@@ -39,6 +39,9 @@ class Dispatcher{
             case 'retirerFavori':
                 $html = (new a\RetirerFavoriAction())->execute();
                 break;
+            case 'double-auth':
+                $html = (new a\DoubleAuthAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;
