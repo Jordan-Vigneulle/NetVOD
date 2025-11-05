@@ -19,7 +19,7 @@ class DefaultAction extends Action{
             $html .= "<div class='playlist-container'>";
             $html .= "</div>";
             $html .= "</div>";
-            $html .= "<h2 id='titleaction'>Vos séries préférées</h2>";
+            $html .= "<h2 id='titleaction'>Ma liste</h2>";
             $html .= "<br><br>";
             $html .= "<div class='playlist-grid'>";
             if(empty($series)){
@@ -41,7 +41,7 @@ class DefaultAction extends Action{
             $html .= "</div>";
             $html .= "</div>";
             $html .= "<div class='playlist-container'>";
-            $html .= "<h2 id='titleaction'>Vos séries en cours</h2>";
+            $html .= "<h2 id='titleaction'>Reprendre la lecture</h2>";
             $html .= "<br><br>";
             if(empty($seriesEnCours)){
                 $html .= "<div class='message-info'>Vous n'avez pas encore de série en cours ? Qu'attendez vous !</div>";
