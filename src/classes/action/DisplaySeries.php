@@ -33,7 +33,7 @@ class DisplaySeries extends Action
                         $html .= "<h3>{$episode['titre']}</h3>";
                         $html .= "<h5>{$episode['resume']}</h5>";
                         $html .= "<div class='card-actions'>";
-                        $html .= "<a href='?action=lecture-series&episode={$id}&series_id={$intvalserieid}' class='btn-view-playlist'>Lecture</a>";
+                        $html .= "<a href='?action=lecture-series&episode={$id}&series_id={$intvalserieid}&numEp={$episode['numero']}' class='btn-view-playlist'>Lecture</a>";
                         $html .= "</div>";
                         $html .= "</div>";
                     }
