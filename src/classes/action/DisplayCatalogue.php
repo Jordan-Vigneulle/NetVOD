@@ -22,10 +22,11 @@ class DisplayCatalogue extends Action{
                     </form>
                     <form method="get">
                         <label>Trier par</label>
-                        <label><input type="radio" name="action" value="display-catalogue">Titre</label>
-                        <label><input type="radio" name="action" value="display-catalogue">Annee de sortie</label>
-                        <label><input type="radio" name="action" value="display-catalogue">Date d'ajout</label>
-                        <label><input type="radio" name="action" value="display-catalogue">Nombre d'épisodes</label>
+                        <label><input type="radio" name="tri" value="display-catalogue">Titre</label>
+                        <label><input type="radio" name="tri" value="display-catalogue">Annee de sortie</label>
+                        <label><input type="radio" name="tri" value="display-catalogue">Date d'ajout</label>
+                        <label><input type="radio" name="tri" value="display-catalogue">Nombre d'épisodes</label>
+                        <input type="hidden" name="action" value="display-catalogue">
                         <button type="submit">Appliquer</button>
                     </form>
                     HTML;
