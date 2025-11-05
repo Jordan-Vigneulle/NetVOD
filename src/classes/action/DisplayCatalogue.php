@@ -18,7 +18,7 @@ class DisplayCatalogue extends Action{
                     <form method="get">
                         <input type="hidden" name="action" value="display-catalogue">
                         <input type="search" name="recherche" placeholder="Rechercher..." required>
-                        <button type="submit">🔍</button>
+                        <button type="submit" hidden></button>
                     </form>
                     HTML;
             $html .= "<br><br>";
@@ -51,4 +51,3 @@ class DisplayCatalogue extends Action{
 
 
 }
-    
