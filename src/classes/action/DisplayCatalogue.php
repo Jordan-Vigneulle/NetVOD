@@ -11,7 +11,7 @@ class DisplayCatalogue extends Action{
     {
 
             $repo = NetVODRepository::getInstance();
-            $catalogue = $repo->catalogueVOD( $_GET['recherche'] ?? '' );
+            $catalogue = $repo->catalogueVOD( $_GET['recherche'] ?? '' , $_GET['tri'] ?? '' );
             $html = <<<HTML
                     <div class='playlist-container'>
                     <h2 id='titleaction'>Catalogue</h2>
@@ -19,6 +19,15 @@ class DisplayCatalogue extends Action{
                         <input type="hidden" name="action" value="display-catalogue">
                         <input type="search" name="recherche" placeholder="Rechercher..." required>
                         <button type="submit" hidden></button>
+                    </form>
+                    <form method="get">
+                        <label>Trier par</label>
+                        <label><input type="radio" name="tri" value="titre">Titre</label>
+                        <label><input type="radio" name="tri" value="annee">Annee de sortie</label>
+                        <label><input type="radio" name="tri" value="date_ajout">Date d'ajout</label>
+                        <label><input type="radio" name="tri" value="display-catalogue">Nombre d'épisodes</label>
+                        <input type="hidden" name="action" value="display-catalogue">
+                        <button type="submit">Appliquer</button>
                     </form>
                     HTML;
             $html .= "<br><br>";

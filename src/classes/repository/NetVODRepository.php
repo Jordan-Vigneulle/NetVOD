@@ -89,15 +89,20 @@ class NetVODRepository
 
 // ----------------------------------  Table série ----------------------------------
 
-    public function catalogueVOD($recherche) : array{
-        $recherche = "%" . $recherche . "%";
-        $query = "SELECT * FROM serie WHERE titre LIKE :recherche OR descriptif LIKE :recherche";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['recherche' => $recherche]);
-        $series = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return $series;
-    }
+public function catalogueVOD($recherche, $tri) : array {
+    $recherche = "%" . $recherche . "%";
 
+    if ($tri === '') {
+        $tri = 'titre'; 
+    }
+    $query = "SELECT * FROM serie WHERE titre LIKE ? OR descriptif LIKE ? ORDER BY $tri";
+    $stmt = $this->pdo->prepare($query);
+    $stmt->bindParam(1, $recherche);
+    $stmt->bindParam(2, $recherche);
+    $stmt->execute();
+    $series = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    return $series;
+}
     public function getDesc($series_id): string
     {
         $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
