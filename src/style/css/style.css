@@ -300,12 +300,10 @@ footer p {
 }
 
 .icon-favori {
-    width: 32px;
-    height: 32px;
-    margin-left: 10px;
-    vertical-align: middle;
+    width: 54px;
+    aspect-ratio: 1/1;
     cursor: pointer;
-    transition: transform 0.2s;
+    object-fit: contain;
 }
 
 .icon-favori:hover {
