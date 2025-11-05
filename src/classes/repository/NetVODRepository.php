@@ -224,8 +224,8 @@ class NetVODRepository
             return $stmt->rowCount() > 0;
         }
 
-        public function setSerieEnCours(int $idSerie,string $email,int $numEp): bool{
-            $query = "INSERT INTO StatutSerie (id,mailUser,statut,numEpisode)VALUES(?,?,'en cours',?)";
+        public function setSerieEnCours(int $idSerie,string $email,int $idEp): bool{
+            $query = "INSERT INTO StatutSerie (id,mailUser,statut,codeEpisode)VALUES(?,?,'en cours',?)";
             $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ? and mailUser = ?";
             $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
 
@@ -239,7 +239,7 @@ class NetVODRepository
                 $stmt2 = $this->pdo->prepare($query);
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
-                $stmt2->bindParam(3,$numEp);
+                $stmt2->bindParam(3,$idEp);
                 $stmt2->execute();
                 return $stmt->rowCount() > 0;
             }else{
