@@ -27,12 +27,12 @@ class DefaultAction extends Action{
                 $html .= "<h3>{$cat['titre']}</h3>";
                 $html .= "<div class='card-actions'>";
                 $html .= "<a href='?action=display-series&series_id={$cat['id']}' class='btn-view-playlist'>Direction episode</a>";
-                $html .= "</div>";
-                $html .= "</div>";
             }
             $html .= "</div>";
             $html .= "</div>";
             }
+            $html .= "</div>";
+            $html .= "</div>";
             $html .= "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>Vos séries en cours</h2>";
             if(empty($seriesEnCours)){

@@ -2,11 +2,7 @@
 
 namespace iutnc\NetVOD\repository;
 
-use iutnc\deefy\audio\lists\Playlist;
-use iutnc\deefy\audio\tracks\AudioTrack;
-use iutnc\deefy\audio\tracks\PodcastTrack;
 use PDO;
-use PDOException;
 
 class NetVODRepository
 {
@@ -16,8 +12,7 @@ class NetVODRepository
 
     private function __construct(array $conf)
     {
-        $this->pdo = new \PDO($conf['dsn'], $conf['user'], $conf['pass'],
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new \PDO($conf['dsn'], $conf['user'], $conf['pass'], [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
 
     public static function getInstance()
@@ -171,7 +166,7 @@ class NetVODRepository
     }
 
     public function getCommentaire(int $id_serie) : array{
-        $query = "SELECT nomUser,commentaire FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
+        $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id_serie' => $id_serie]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
@@ -244,25 +239,27 @@ class NetVODRepository
         return $data;
     }
 
-    public function addCommentaire($series_id, $commentaire, $user)
+    public function addCommentaire($series_id, $commentaire, $user,$note)
     {
-        $query = "SELECT COUNT(*) FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
+        $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id_serie' => $series_id, 'user' => $user]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $commentaires = $stmt->fetchAll();
         if(empty($commentaires)){
-            $query2 = "INSERT INTO StatutSerie (id,mailUser,commentaire)VALUES(:serieid,:mailuser,:commentaire)";
+            $query2 = "INSERT INTO StatutSerie (id,mailUser,commentaire,datecommentaire)VALUES(:serieid,:mailuser,:commentaire,CURRENT_TIME)";
             $stmt2 = $this->pdo->prepare($query2);
             $stmt2->execute(['serieid' => $series_id, 'mailuser' => $user, 'commentaire' => $commentaire]);
-            $stmt2->execute();
         }else{
-            $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = ?";
+            $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = :id_serie AND StatutSerie.mailUser = :user";
             $stmt = $this->pdo->prepare($update);
-            $stmt->bindParam(1,$commentaire);
-            $stmt->execute();
+            $stmt->execute(['commentaire'=>$commentaire,'id_serie' => $series_id, 'user' => $user]);
         }
-
+        if(isset($note)){
+            $notequery = "UPDATE StatutSerie SET note = :note WHERE id = :id_serie AND StatutSerie.mailUser = :user";
+            $stmt = $this->pdo->prepare($notequery);
+            $stmt->execute(['note'=>$note,'id_serie' => $series_id, 'user' => $user]);
+        }
     }
 }
 

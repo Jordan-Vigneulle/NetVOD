@@ -44,31 +44,32 @@ class DisplaySeries extends Action
                     $html .= <<<HTML
                         <form method="post" action="?action=display-series&series_id=${intvalserieid}">
                         <div id="titleaction">Commentaire</div>
-                        <input type="nom" name="commentaire" placeholder="Commentaire" required>
+                        <input type="text" name="commentaire" placeholder="Commentaire" required>
+                        <input type="number" name="note" placeholder="Note">
                         <input type="submit" value="Publier">
                          </form>
                         HTML;
                 }else{
-                    $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_EMAIL);
+                    $commentaire = filter_var($_POST['commentaire'], FILTER_DEFAULT);
+                    $note = filter_var($_POST['note'], FILTER_SANITIZE_NUMBER_INT);
                     $repo = NetVODRepository::getInstance();
-                    $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user']);
+                    $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user'],$note);
                     $html .= "<div class='message-info'>Commentaire ajouté.</div>";
                 }
                 $html .= "<div class='playlist-container'>";
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
-                $html .= "<div class='playlist-grid'>";
                 foreach ($commentaires as $commentaire) {
                     if(!empty($commentaire['commentaire'])){
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$commentaire['nomUser']}</h3>";
                     $html .= "{$commentaire['commentaire']}";
+                    if(isset($commentaire['note'])){
+                        $html .= "<p>{$commentaire['note']}/5</p>";
+                    }
                     $html .= "</div>";
-                    $html .= "</div>";
+                    $html .= "<br><br>";
                     }
                 }
-                $html .= "</div>";
-                $html .= "</div>";
-
             }
             } else {
                 $html .= "<div class='message-info'>Cette série n'existe pas.</div>";
