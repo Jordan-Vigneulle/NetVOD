@@ -17,7 +17,10 @@ class DefaultAction extends Action{
             $prenom = $user['nomUser'];
             $html .= "<div class='message-info'>Ravi de vous revoir $prenom</div>";
             $html .= "<div class='playlist-container'>";
+            $html .= "</div>";
+            $html .= "</div>";
             $html .= "<h2 id='titleaction'>Vos séries préférées</h2>";
+            $html .= "<br><br>";
             $html .= "<div class='playlist-grid'>";
             if(empty($series)){
                 $html .= "<div class='message-info'>Vous n'avez pas encore de série préféré ? Qu'attendez vous !</div>";
@@ -27,14 +30,18 @@ class DefaultAction extends Action{
                 $html .= "<h3>{$cat['titre']}</h3>";
                 $html .= "<div class='card-actions'>";
                 $html .= "<a href='?action=display-series&series_id={$cat['id']}' class='btn-view-playlist'>Direction episode</a>";
+                $html .= "</div>";
+                $html .= "</div>";
             }
             $html .= "</div>";
             $html .= "</div>";
             }
+            $html .= "<br><br>";
             $html .= "</div>";
             $html .= "</div>";
             $html .= "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>Vos séries en cours</h2>";
+            $html .= "<br><br>";
             if(empty($seriesEnCours)){
                 $html .= "<div class='message-info'>Vous n'avez pas encore de série en cours ? Qu'attendez vous !</div>";
             }else{
