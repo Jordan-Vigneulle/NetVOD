@@ -1,0 +1,19 @@
+Subject: [PATCH] Uncommitted changes before Update at 05/11/2025, 09:50 [Changes]
+---
+Index: src/classes/action/DisplayCatalogue.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/classes/action/DisplayCatalogue.php b/src/classes/action/DisplayCatalogue.php
+--- a/src/classes/action/DisplayCatalogue.php	(revision a640429cc9233ae1e7a02185b0baae5a461b5ec3)
++++ b/src/classes/action/DisplayCatalogue.php	(date 1762332622916)
+@@ -18,7 +18,7 @@
+                     <form method="get">
+                         <input type="hidden" name="action" value="display-catalogue">
+                         <input type="search" name="recherche" placeholder="Rechercher..." required>
+-                        <button type="submit">🔍</button>
++                        <button type="submit" hidden></button>
+                     </form>
+                     HTML;
+             $html .= "<br><br>";

@@ -50,7 +50,7 @@ class DisplaySeries extends Action
                         <input type="text" name="commentaire" placeholder="Commentaire" required>
                         <input type="number" name="note" placeholder="Note">
                         <input type="submit" value="Publier">
-                         </form>
+                        </form>
                         HTML;
                 }else{
                     $commentaire = filter_var($_POST['commentaire'], FILTER_DEFAULT);

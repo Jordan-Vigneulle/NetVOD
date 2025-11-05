@@ -2,7 +2,7 @@
 
 namespace iutnc\NetVOD\action;
 
-
+use Dom\HTMLElement;
 use iutnc\NetVOD\repository\NetVODRepository;
 
 class DisplayCatalogue extends Action{
@@ -11,17 +11,27 @@ class DisplayCatalogue extends Action{
     {
 
             $repo = NetVODRepository::getInstance();
-            $catalogue = $repo->catalogueVOD();
-            $html = "<div class='playlist-container'>";
-            $html .= "<h2 id='titleaction'>Catalogue</h2>";
-
-                $html .= "<div class='playlist-grid'>";
+            $catalogue = $repo->catalogueVOD( $_GET['recherche'] ?? '' );
+            $html = <<<HTML
+                    <div class='playlist-container'>
+                    <h2 id='titleaction'>Catalogue</h2>
+                    <form method="get">
+                        <input type="hidden" name="action" value="display-catalogue">
+                        <input type="search" name="recherche" placeholder="Rechercher..." required>
+                        <button type="submit" hidden></button>
+                    </form>
+                    HTML;
+            $html .= "<br><br>";
+            $html .= "<div class='playlist-grid'>";
                 foreach ($catalogue as $cat) {
                     $id = $cat['id'];
-                    $html .= "<div class='playlist-card'>";
-                    $html .= "<h3>{$cat['titre']}</h3>";
-                    $html .= "<div class='card-actions'>";
-                    $html .= "<a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>";
+                    $html .= <<<HTML
+                            <div class='playlist-card'>
+                                <h3>{$cat['titre']}</h3>
+                                <img src="src/style/img/{$cat['img']}" alt="{$cat['titre']}">
+                                <div class='card-actions'>
+                                    <a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>
+                            HTML;
                     if(isset($_SESSION['user'])){
                         $html .= "<br><br>";
                         $tabFavoris = $repo->getSerieFavori($_SESSION['user']);
