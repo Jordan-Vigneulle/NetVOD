@@ -238,13 +238,13 @@ public function catalogueVOD($recherche, $tri) : array {
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
                 $stmt2->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt2->rowCount() > 0;
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
                 $stmt3->bindParam(2,$email);
                 $stmt3->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt3->rowCount() > 0;
             }
         }
 
@@ -274,13 +274,35 @@ public function catalogueVOD($recherche, $tri) : array {
                 $stmt2->bindParam(2,$email);
                 $stmt2->bindParam(3,$idEp);
                 $stmt2->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt2->rowCount() > 0;
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
                 $stmt3->bindParam(2,$email);
                 $stmt3->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt3->rowCount() > 0;
+            }
+        }
+
+        public function avanceeSerie(int $codeEpisode,int $idSerie,string $email): bool{
+            $update = "UPDATE StatutSerie SET codeEpisode = ? WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
+
+            $stmt = $this->pdo->prepare($test);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
+            $stmt->execute();
+            $res = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+            if($res !== '0'){
+                $stmt2 = $this->pdo->prepare($update);
+                $stmt2->bindParam(1,$codeEpisode);
+                $stmt2->bindParam(2,$idSerie);
+                $stmt2->bindParam(3,$email);
+                $stmt2->execute();
+                return $stmt2->rowCount() > 0;
+            }else{
+                return false;
             }
         }
 
@@ -350,13 +372,13 @@ public function catalogueVOD($recherche, $tri) : array {
                 $stmt2->bindParam(2,$email);
                 $stmt2->bindParam(3,$idEp);
                 $stmt2->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt2->rowCount() > 0;
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
                 $stmt3->bindParam(2,$email);
                 $stmt3->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt3->rowCount() > 0;
             }
         }
 

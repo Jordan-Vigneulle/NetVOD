@@ -66,7 +66,7 @@ class DefaultAction extends Action{
                 $html .= "<div class='playlist-grid'>";
                 foreach ($seriesTermine as $cat3) {
                 $html .= "<div class='playlist-card'>";
-                $html .=  "<a href='?action=lecture-series&episode={$cat3['codeEpisode']}&series_id={$cat3['id']}'><img src=src/style/img/{$cat3['img']} alt='{$cat3['titre']}'></a>";
+                $html .=  "<a href='?action=display-series&series_id={$cat3['id']}'><img src=src/style/img/{$cat3['img']} alt='{$cat3['titre']}'></a>";
                         $html .= "<div class='card-actions'>";
                 $html .= "</div>";
                 $html .= "</div>";
