@@ -14,12 +14,15 @@ class DisplaySeries extends Action
             $repo = NetVODRepository::getInstance();
             $episodes  = "";
             $titre = "";
+            $moynote = 0;
             $intvalserieid = intval($_GET['series_id']);
             $episodes = $repo->episodeSeries($intvalserieid);
             $titre = $repo->getTitre($intvalserieid);
             $desc = $repo->getDesc($intvalserieid);
+            $moynote = $repo->getMoyNote($intvalserieid);
             $html = "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>$titre</h2>";
+            $html .= "<h3 id='titleaction'> Note moyenne : $moynote </h3>";
             $html .= "<p id='descriptionaction'>$desc</p>";
             $html .= "<div class='playlist-grid'>";
             if ($episodes) {

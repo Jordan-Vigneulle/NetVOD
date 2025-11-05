@@ -107,6 +107,21 @@ class NetVODRepository
         return $series['descriptif'];
     }
 
+    public function getMoyNote($series_id): string
+    {
+        $query = "SELECT ROUND(AVG(note),2) as Note FROM StatutSerie WHERE id = :idSerie";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idSerie' => $series_id]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $series = $stmt->fetch();
+        if($series['Note']!=0){
+            $note = $series['Note'];
+        }else{
+            $note = 0;
+        }
+        return $note;
+    }
+
     public function getTitre($series_id): ?string
     {
         $query = "SELECT titre FROM serie WHERE id = :idSerie";
@@ -220,7 +235,7 @@ class NetVODRepository
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
-                $stmt2->bindParam(2,$email);
+                $stmt3->bindParam(2,$email);
                 $stmt3->execute();
                 return $stmt->rowCount() > 0;
             }
