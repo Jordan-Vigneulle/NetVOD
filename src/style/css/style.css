@@ -176,7 +176,12 @@ form button:hover,
     border: 1px solid #ffffff;
     color: #ff6865;
 }
-
+.profilepicture-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 15px;
+}
 .playlist-container {
     padding: 15px;
 }
@@ -191,6 +196,23 @@ form button:hover,
 
 img{
     max-width: 100%;
+}
+
+.profilepicture {
+    background-color: #282828;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 90px;
+    width: 100px;
+}
+
+.profilepicture:hover {
+    background-color: #3e3e3e;
+    transform: translateY(-3px);
 }
 
 .playlist-card {

@@ -92,16 +92,21 @@ class NetVODRepository
 public function catalogueVOD($recherche, $tri) : array {
     $recherche = "%" . $recherche . "%";
 
-    if ($tri === '') {
-        $tri = 'titre'; 
+    $allowedSort = ['titre', 'annee', 'date_ajout'];
+    if (!in_array($tri, $allowedSort)) {
+        $tri = 'titre';
     }
-    $query = "SELECT * FROM serie WHERE titre LIKE ? OR descriptif LIKE ? ORDER BY $tri";
+
+    $query = "SELECT * FROM serie 
+            WHERE titre LIKE ? OR descriptif LIKE ?
+            ORDER BY $tri";
+
     $stmt = $this->pdo->prepare($query);
     $stmt->bindParam(1, $recherche);
     $stmt->bindParam(2, $recherche);
     $stmt->execute();
-    $series = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    return $series;
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 }
     public function getDesc($series_id): string
     {
@@ -381,6 +386,15 @@ public function catalogueVOD($recherche, $tri) : array {
                 return $stmt3->rowCount() > 0;
             }
         }
+
+    public function getPhotoProfileALL() : array
+    {
+        $query = "SELECT * FROM PhotoProfil";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
+    }
 
 }
 
