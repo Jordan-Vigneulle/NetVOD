@@ -360,6 +360,15 @@ public function catalogueVOD($recherche, $tri) : array {
             }
         }
 
+    public function getPhotoProfileALL() : array
+    {
+        $query = "SELECT * FROM PhotoProfil";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
+    }
+
 }
 
 
