@@ -14,6 +14,7 @@ class DefaultAction extends Action{
             $user = $repo->getInformation($_SESSION['user']);
             $series = $repo->getSerieFavori($_SESSION['user']);
             $seriesEnCours = $repo->getSerieEnCours($_SESSION['user']);
+            $seriesTermine = $repo->getSerieFini($_SESSION['user']);
             $prenom = $user['nomUser'];
             $html .= "<div class='message-info'>Ravi de vous revoir $prenom</div>";
             $html .= "<div class='playlist-container'>";
@@ -53,6 +54,26 @@ class DefaultAction extends Action{
                 $html .=  "<img src=src/style/img/{$cat2['img']} alt='{$cat2['titre']}'>";
                         $html .= "<div class='card-actions'>";
                 $html .= "<a href='?action=lecture-series&episode={$cat2['codeEpisode']}&series_id={$cat2['id']}' class='btn-view-playlist'>Direction episode</a>";
+                $html .= "</div>";
+                $html .= "</div>";
+            }
+            
+            $html .= "</div>";
+            $html .= "</div>";
+            $html .= "<div class='playlist-container'>";
+            $html .= "<h2 id='titleaction'>Vos séries Terminées</h2>";
+            $html .= "<br><br>";
+            }
+            if(empty($seriesTermine)){
+                $html .= "<div class='message-info'>Vous n'avez pas encore de série Terminée ? Qu'attendez vous !</div>";
+            }else{
+                $html .= "<div class='playlist-grid'>";
+                foreach ($seriesTermine as $cat3) {
+                $html .= "<div class='playlist-card'>";
+                $html .= "<h3>{$cat3['titre']}</h3>";
+                $html .=  "<img src=src/style/img/{$cat3['img']} alt='{$cat3['titre']}'>";
+                        $html .= "<div class='card-actions'>";
+                $html .= "<a href='?action=lecture-series&episode={$cat3['codeEpisode']}&series_id={$cat3['id']}' class='btn-view-playlist'>Direction episode</a>";
                 $html .= "</div>";
                 $html .= "</div>";
             }

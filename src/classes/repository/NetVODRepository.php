@@ -161,6 +161,20 @@ public function catalogueVOD($recherche, $tri) : array {
         return $series['file'];
     }
 
+    public function getDernierEp(int $idSerie): ?array{
+        $sql = "SELECT codeEpisode FROM episode WHERE serie_id = ? AND numero = (SELECT MAX(numero) FROM episode WHERE serie_id = ?)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(1,$idSerie);
+        $stmt->bindParam(2,$idSerie);
+        $stmt->execute();
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data; 
+
+    }
+
 
 
 // ----------------------------------  Table utilisateur ----------------------------------
@@ -292,6 +306,47 @@ public function catalogueVOD($recherche, $tri) : array {
             $stmt->execute(['note'=>$note,'id_serie' => $series_id, 'user' => $user]);
         }
     }
+
+    public function getSerieFini(string $user): ?array
+    {
+        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE StatutSerie.mailUser = ? and StatutSerie.statut = 'fini'";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(1,$user);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data;
+    }
+
+    public function setSerieTermine(int $idSerie,string $email,int $idEp): bool{
+            $query = "INSERT INTO StatutSerie (id,mailUser,statut,codeEpisode)VALUES(?,?,'fini',?)";
+            $update = "UPDATE StatutSerie SET statut = 'fini' WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
+
+            $stmt = $this->pdo->prepare($test);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
+            $stmt->execute();
+            $res = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+            if($res === '0'){
+                $stmt2 = $this->pdo->prepare($query);
+                $stmt2->bindParam(1,$idSerie);
+                $stmt2->bindParam(2,$email);
+                $stmt2->bindParam(3,$idEp);
+                $stmt2->execute();
+                return $stmt->rowCount() > 0;
+            }else{
+                $stmt3 = $this->pdo->prepare($update);
+                $stmt3->bindParam(1,$idSerie);
+                $stmt3->bindParam(2,$email);
+                $stmt3->execute();
+                return $stmt->rowCount() > 0;
+            }
+        }
+
 }
 
 
