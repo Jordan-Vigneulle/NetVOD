@@ -25,6 +25,7 @@ class AddFavorisAction extends Action
              return "Echec, cette série n'éxiste pas";
         }
         $resultat = $r->setSerieFavoris($idSerie,$_SESSION['user']);
-        return "Série ajoutée aux favoris";
+        header("Location: ?action=display-catalogue");
+        exit();
     }
 }
