@@ -89,14 +89,25 @@ class NetVODRepository
 
 // ----------------------------------  Table série ----------------------------------
 
-    public function catalogueVOD() : array{
-        $query = "SELECT * FROM serie";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-        $series = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return $series;
+public function catalogueVOD($recherche, $tri) : array {
+    $recherche = "%" . $recherche . "%";
+
+    $allowedSort = ['titre', 'annee', 'date_ajout'];
+    if (!in_array($tri, $allowedSort)) {
+        $tri = 'titre';
     }
 
+    $query = "SELECT * FROM serie 
+            WHERE titre LIKE ? OR descriptif LIKE ?
+            ORDER BY $tri";
+
+    $stmt = $this->pdo->prepare($query);
+    $stmt->bindParam(1, $recherche);
+    $stmt->bindParam(2, $recherche);
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+}
     public function getDesc($series_id): string
     {
         $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
@@ -155,6 +166,33 @@ class NetVODRepository
         return $series['file'];
     }
 
+    public function getDernierEp(int $idSerie): ?array{
+        $sql = "SELECT codeEpisode FROM episode WHERE serie_id = ? AND numero = (SELECT MAX(numero) FROM episode WHERE serie_id = ?)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(1,$idSerie);
+        $stmt->bindParam(2,$idSerie);
+        $stmt->execute();
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data;
+
+    }
+
+    public function getNumeroEp(int $idEp): ?array{
+        $sql = "SELECT numero FROM episode WHERE codeEpisode= ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(1,$idEp);
+        $stmt->execute();
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data;
+
+    }
+
 
 
 // ----------------------------------  Table utilisateur ----------------------------------
@@ -205,13 +243,13 @@ class NetVODRepository
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
                 $stmt2->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt2->rowCount() > 0;
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
                 $stmt3->bindParam(2,$email);
                 $stmt3->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt3->rowCount() > 0;
             }
         }
 
@@ -224,8 +262,8 @@ class NetVODRepository
             return $stmt->rowCount() > 0;
         }
 
-        public function setSerieEnCours(int $idSerie,string $email): bool{
-            $query = "INSERT INTO StatutSerie (id,mailUser,statut)VALUES(?,?,'en cours')";
+        public function setSerieEnCours(int $idSerie,string $email,int $idEp): bool{
+            $query = "INSERT INTO StatutSerie (id,mailUser,statut,codeEpisode)VALUES(?,?,'en cours',?)";
             $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ? and mailUser = ?";
             $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
 
@@ -239,14 +277,37 @@ class NetVODRepository
                 $stmt2 = $this->pdo->prepare($query);
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
+                $stmt2->bindParam(3,$idEp);
                 $stmt2->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt2->rowCount() > 0;
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
                 $stmt3->bindParam(2,$email);
                 $stmt3->execute();
-                return $stmt->rowCount() > 0;
+                return $stmt3->rowCount() > 0;
+            }
+        }
+
+        public function avanceeSerie(int $codeEpisode,int $idSerie,string $email): bool{
+            $update = "UPDATE StatutSerie SET codeEpisode = ? WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
+
+            $stmt = $this->pdo->prepare($test);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
+            $stmt->execute();
+            $res = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+            if($res !== '0'){
+                $stmt2 = $this->pdo->prepare($update);
+                $stmt2->bindParam(1,$codeEpisode);
+                $stmt2->bindParam(2,$idSerie);
+                $stmt2->bindParam(3,$email);
+                $stmt2->execute();
+                return $stmt2->rowCount() > 0;
+            }else{
+                return false;
             }
         }
 
@@ -342,6 +403,56 @@ class NetVODRepository
         }
 
 
+
+
+    public function getSerieFini(string $user): ?array
+    {
+        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE StatutSerie.mailUser = ? and StatutSerie.statut = 'fini'";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(1,$user);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data;
+    }
+
+    public function setSerieTermine(int $idSerie,string $email,int $idEp): bool{
+            $query = "INSERT INTO StatutSerie (id,mailUser,statut,codeEpisode)VALUES(?,?,'fini',?)";
+            $update = "UPDATE StatutSerie SET statut = 'fini' WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
+
+            $stmt = $this->pdo->prepare($test);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
+            $stmt->execute();
+            $res = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+            if($res === '0'){
+                $stmt2 = $this->pdo->prepare($query);
+                $stmt2->bindParam(1,$idSerie);
+                $stmt2->bindParam(2,$email);
+                $stmt2->bindParam(3,$idEp);
+                $stmt2->execute();
+                return $stmt2->rowCount() > 0;
+            }else{
+                $stmt3 = $this->pdo->prepare($update);
+                $stmt3->bindParam(1,$idSerie);
+                $stmt3->bindParam(2,$email);
+                $stmt3->execute();
+                return $stmt3->rowCount() > 0;
+            }
+        }
+
+    public function getPhotoProfileALL() : array
+    {
+        $query = "SELECT * FROM PhotoProfil";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $data;
+    }
 
 }
 

@@ -14,12 +14,13 @@ class DefaultAction extends Action{
             $user = $repo->getInformation($_SESSION['user']);
             $series = $repo->getSerieFavori($_SESSION['user']);
             $seriesEnCours = $repo->getSerieEnCours($_SESSION['user']);
+            $seriesTermine = $repo->getSerieFini($_SESSION['user']);
             $prenom = $user['nomUser'];
             $html .= "<div class='message-info'>Ravi de vous revoir $prenom</div>";
             $html .= "<div class='playlist-container'>";
             $html .= "</div>";
             $html .= "</div>";
-            $html .= "<h2 id='titleaction'>Vos séries préférées</h2>";
+            $html .= "<h2 id='titleaction'>Ma liste</h2>";
             $html .= "<br><br>";
             $html .= "<div class='playlist-grid'>";
             if(empty($series)){
@@ -27,9 +28,8 @@ class DefaultAction extends Action{
             }else{
                 foreach ($series as $cat) {
                 $html .= "<div class='playlist-card'>";
-                $html .= "<h3>{$cat['titre']}</h3>";
+                $html .=  "<a href='?action=display-series&series_id={$cat['id']}'><img src=src/style/img/{$cat['img']} alt='{$cat['titre']}' width='100%')></a>";
                 $html .= "<div class='card-actions'>";
-                $html .= "<a href='?action=display-series&series_id={$cat['id']}' class='btn-view-playlist'>Direction episode</a>";
                 $html .= "</div>";
                 $html .= "</div>";
             }
@@ -40,7 +40,7 @@ class DefaultAction extends Action{
             $html .= "</div>";
             $html .= "</div>";
             $html .= "<div class='playlist-container'>";
-            $html .= "<h2 id='titleaction'>Vos séries en cours</h2>";
+            $html .= "<h2 id='titleaction'>Reprendre la lecture</h2>";
             $html .= "<br><br>";
             if(empty($seriesEnCours)){
                 $html .= "<div class='message-info'>Vous n'avez pas encore de série en cours ? Qu'attendez vous !</div>";
@@ -48,9 +48,26 @@ class DefaultAction extends Action{
                 $html .= "<div class='playlist-grid'>";
                 foreach ($seriesEnCours as $cat2) {
                 $html .= "<div class='playlist-card'>";
-                $html .= "<h3>{$cat2['titre']}</h3>";
-                $html .= "<div class='card-actions'>";
-                $html .= "<a href='?action=display-series&series_id={$cat2['id']}' class='btn-view-playlist'>Direction episode</a>";
+                $html .=  "<a href='?action=lecture-series&episode={$cat2['codeEpisode']}&series_id={$cat2['id']}'><img src=src/style/img/{$cat2['img']} alt='{$cat2['titre']}'></a>";
+                        $html .= "<div class='card-actions'>";
+                $html .= "</div>";
+                $html .= "</div>";
+            }
+            
+            $html .= "</div>";
+            $html .= "</div>";
+            $html .= "<div class='playlist-container'>";
+            $html .= "<h2 id='titleaction'>Vos séries Terminées</h2>";
+            $html .= "<br><br>";
+            }
+            if(empty($seriesTermine)){
+                $html .= "<div class='message-info'>Vous n'avez pas encore de série Terminée ? Qu'attendez vous !</div>";
+            }else{
+                $html .= "<div class='playlist-grid'>";
+                foreach ($seriesTermine as $cat3) {
+                $html .= "<div class='playlist-card'>";
+                $html .=  "<a href='?action=display-series&series_id={$cat3['id']}'><img src=src/style/img/{$cat3['img']} alt='{$cat3['titre']}'></a>";
+                        $html .= "<div class='card-actions'>";
                 $html .= "</div>";
                 $html .= "</div>";
             }

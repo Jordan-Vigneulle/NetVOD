@@ -18,6 +18,9 @@ class Dispatcher{
     public function run(){
         $html = "";
         switch($this->action){
+            case 'modif-user':
+                $html = (new a\ModificationProfileAction())->execute();
+                break;
             case 'add-user':
                 $html = (new a\AddUserAction())->execute();
                 break;
@@ -41,6 +44,9 @@ class Dispatcher{
                 break;
             case 'double-auth':
                 $html = (new a\DoubleAuthAction())->execute();
+                break;
+            case 'termineSerie':
+                $html = (new a\TerminerSerieAction())->execute();
                 break;
             default:
                 $html = (new a\DefaultAction())->execute();

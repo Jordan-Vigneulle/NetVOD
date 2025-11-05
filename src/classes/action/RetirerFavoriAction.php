@@ -7,7 +7,7 @@ use iutnc\NetVOD\repository\NetVODRepository;
 require_once 'vendor/autoload.php';
 
 /*
- * Classe permettant d'ajouter une série en favoris
+ * Classe permettant de retirer une série des favoris
  *
  * */
 class RetirerFavoriAction extends Action
@@ -26,8 +26,11 @@ class RetirerFavoriAction extends Action
         }
         $resultat = $r->setSerieNonFavoris($idSerie,$_SESSION['user']);
         if($resultat === false){
-            return "Série non retirée des favoris";
+            $_SESSION['message'] = "Série ajoutée aux favoris !";
+            header("Location: ?action=display-catalogue");
+            exit();
         }
-        return "Série retirée des favoris";
+        header("Location: ?action=display-catalogue");
+        exit();
     }
 }
