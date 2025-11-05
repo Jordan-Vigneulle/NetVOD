@@ -14,12 +14,15 @@ class DisplaySeries extends Action
             $repo = NetVODRepository::getInstance();
             $episodes  = "";
             $titre = "";
+            $moynote = 0;
             $intvalserieid = intval($_GET['series_id']);
             $episodes = $repo->episodeSeries($intvalserieid);
             $titre = $repo->getTitre($intvalserieid);
             $desc = $repo->getDesc($intvalserieid);
+            $moynote = $repo->getMoyNote($intvalserieid);
             $html = "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>$titre</h2>";
+            $html .= "<h3 id='titleaction'> Note moyenne : $moynote </h3>";
             $html .= "<p id='descriptionaction'>$desc</p>";
             $html .= "<div class='playlist-grid'>";
             if ($episodes) {
@@ -45,30 +48,35 @@ class DisplaySeries extends Action
                         <form method="post" action="?action=display-series&series_id=${intvalserieid}">
                         <div id="titleaction">Commentaire</div>
                         <input type="text" name="commentaire" placeholder="Commentaire" required>
+                        <input type="number" name="note" placeholder="Note">
                         <input type="submit" value="Publier">
                          </form>
                         HTML;
                 }else{
                     $commentaire = filter_var($_POST['commentaire'], FILTER_DEFAULT);
-                    $repo = NetVODRepository::getInstance();
-                    $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user']);
-                    $html .= "<div class='message-info'>Commentaire ajouté.</div>";
+                    $note = filter_var($_POST['note'], FILTER_SANITIZE_NUMBER_INT);
+                    if($note >= 0 && $note <= 5){
+                        $repo = NetVODRepository::getInstance();
+                        $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user'],$note);
+                        $html .= "<div class='message-info'>Commentaire ajouté.</div>";
+                    }else{
+                        $html .= "<div class='message-info'>Note doit être comprise entre 0 à 5.</div>";
+                    }
                 }
                 $html .= "<div class='playlist-container'>";
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
-                $html .= "<div class='playlist-grid'>";
                 foreach ($commentaires as $commentaire) {
                     if(!empty($commentaire['commentaire'])){
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$commentaire['nomUser']}</h3>";
                     $html .= "{$commentaire['commentaire']}";
+                    if(isset($commentaire['note'])){
+                        $html .= "<p>{$commentaire['note']}/5</p>";
+                    }
                     $html .= "</div>";
-                    $html .= "</div>";
+                    $html .= "<br><br>";
                     }
                 }
-                $html .= "</div>";
-                $html .= "</div>";
-
             }
             } else {
                 $html .= "<div class='message-info'>Cette série n'existe pas.</div>";

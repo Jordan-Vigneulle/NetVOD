@@ -108,6 +108,21 @@ class NetVODRepository
         return $series['descriptif'];
     }
 
+    public function getMoyNote($series_id): string
+    {
+        $query = "SELECT ROUND(AVG(note),2) as Note FROM StatutSerie WHERE id = :idSerie";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idSerie' => $series_id]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $series = $stmt->fetch();
+        if($series['Note']!=0){
+            $note = $series['Note'];
+        }else{
+            $note = 0;
+        }
+        return $note;
+    }
+
     public function getTitre($series_id): ?string
     {
         $query = "SELECT titre FROM serie WHERE id = :idSerie";
@@ -167,7 +182,7 @@ class NetVODRepository
     }
 
     public function getCommentaire(int $id_serie) : array{
-        $query = "SELECT nomUser,commentaire FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
+        $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id_serie' => $id_serie]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
@@ -177,11 +192,12 @@ class NetVODRepository
 
         public function setSerieFavoris(int $idSerie,string $email): bool{
             $query = "INSERT INTO StatutSerie (id,mailUser,favori)VALUES(?,?,1)";
-            $update = "UPDATE StatutSerie SET favori = 1 WHERE id = ?";
-            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ?";
+            $update = "UPDATE StatutSerie SET favori = 1 WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
 
             $stmt = $this->pdo->prepare($test);
             $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
@@ -194,18 +210,29 @@ class NetVODRepository
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
+                $stmt3->bindParam(2,$email);
                 $stmt3->execute();
                 return $stmt->rowCount() > 0;
             }
         }
 
-        public function setSerieEnCours(int $idSerie,string $email): bool{
-            $query = "INSERT INTO StatutSerie (id,mailUser,statut)VALUES(?,?,'en cours')";
-            $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ?";
-            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ?";
+        public function setSerieNonFavoris(int $idSerie,string $email): bool{
+            $update = "UPDATE StatutSerie SET favori = 0 WHERE id = ? and mailUser = ?";
+            $stmt = $this->pdo->prepare($update);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
+        }
+
+        public function setSerieEnCours(int $idSerie,string $email,int $idEp): bool{
+            $query = "INSERT INTO StatutSerie (id,mailUser,statut,codeEpisode)VALUES(?,?,'en cours',?)";
+            $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
 
             $stmt = $this->pdo->prepare($test);
             $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
@@ -213,11 +240,13 @@ class NetVODRepository
                 $stmt2 = $this->pdo->prepare($query);
                 $stmt2->bindParam(1,$idSerie);
                 $stmt2->bindParam(2,$email);
+                $stmt2->bindParam(3,$idEp);
                 $stmt2->execute();
                 return $stmt->rowCount() > 0;
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
+                $stmt3->bindParam(2,$email);
                 $stmt3->execute();
                 return $stmt->rowCount() > 0;
             }
@@ -225,7 +254,7 @@ class NetVODRepository
 
         public function getSerieEnCours(string $user): ?array
     {
-        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = ? and statut = 'en cours'";
+        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE StatutSerie.mailUser = ? and StatutSerie.statut = 'en cours'";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(1,$user);
         $stmt->execute();
@@ -236,7 +265,7 @@ class NetVODRepository
         return $data;
     }
 
-    public function addCommentaire($series_id, $commentaire, $user)
+    public function addCommentaire($series_id, $commentaire, $user,$note)
     {
         $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
         $stmt = $this->pdo->prepare($query);
@@ -248,11 +277,15 @@ class NetVODRepository
             $stmt2 = $this->pdo->prepare($query2);
             $stmt2->execute(['serieid' => $series_id, 'mailuser' => $user, 'commentaire' => $commentaire]);
         }else{
-            $update = "UPDATE StatutSerie SET commentaire = :commentaire AND datecommentaire = CURRENT_TIME WHERE id = :id_serie AND StatutSerie.mailUser = :user";
+            $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = :id_serie AND StatutSerie.mailUser = :user";
             $stmt = $this->pdo->prepare($update);
             $stmt->execute(['commentaire'=>$commentaire,'id_serie' => $series_id, 'user' => $user]);
         }
-
+        if(isset($note)){
+            $notequery = "UPDATE StatutSerie SET note = :note WHERE id = :id_serie AND StatutSerie.mailUser = :user";
+            $stmt = $this->pdo->prepare($notequery);
+            $stmt->execute(['note'=>$note,'id_serie' => $series_id, 'user' => $user]);
+        }
     }
 }
 
