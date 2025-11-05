@@ -62,6 +62,9 @@ class DisplaySeries extends Action
                     $html .= "<div class='playlist-card'>";
                     $html .= "<h3>{$commentaire['nomUser']}</h3>";
                     $html .= "{$commentaire['commentaire']}";
+                    if(isset($commentaire['note'])){
+                        $html .= "<p>{$commentaire['note']}/5</p>";
+                    }
                     $html .= "</div>";
                     $html .= "</div>";
                     }

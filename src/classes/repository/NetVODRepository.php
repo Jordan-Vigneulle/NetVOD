@@ -166,7 +166,7 @@ class NetVODRepository
     }
 
     public function getCommentaire(int $id_serie) : array{
-        $query = "SELECT nomUser,commentaire FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
+        $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie ORDER BY datecommentaire DESC";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id_serie' => $id_serie]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
