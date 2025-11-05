@@ -175,6 +175,19 @@ public function catalogueVOD($recherche, $tri) : array {
 
     }
 
+    public function getNumeroEp(int $idEp): ?array{
+        $sql = "SELECT numero FROM episode WHERE codeEpisode= ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(1,$idEp);
+        $stmt->execute();
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data; 
+
+    }
+
 
 
 // ----------------------------------  Table utilisateur ----------------------------------
