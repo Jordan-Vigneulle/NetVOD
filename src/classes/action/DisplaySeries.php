@@ -52,9 +52,13 @@ class DisplaySeries extends Action
                 }else{
                     $commentaire = filter_var($_POST['commentaire'], FILTER_DEFAULT);
                     $note = filter_var($_POST['note'], FILTER_SANITIZE_NUMBER_INT);
-                    $repo = NetVODRepository::getInstance();
-                    $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user'],$note);
-                    $html .= "<div class='message-info'>Commentaire ajouté.</div>";
+                    if($note >= 0 && $note <= 5){
+                        $repo = NetVODRepository::getInstance();
+                        $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user'],$note);
+                        $html .= "<div class='message-info'>Commentaire ajouté.</div>";
+                    }else{
+                        $html .= "<div class='message-info'>Note doit être comprise entre 0 à 5.</div>";
+                    }
                 }
                 $html .= "<div class='playlist-container'>";
                 $html .= "<h2 id='titleaction'>Commentaire</h2>";
