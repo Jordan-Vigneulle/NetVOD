@@ -7,10 +7,9 @@ use iutnc\NetVOD\repository\NetVODRepository;
 require_once 'vendor/autoload.php';
 
 /*
- * Classe permettant de retirer une série des favoris
- *
+ * Classe permettant de terminer une serie
  * */
-class RetirerFavoriAction extends Action
+class TerminerSerieAction extends Action
 {
     public function execute(): string
     {
@@ -24,13 +23,8 @@ class RetirerFavoriAction extends Action
         if($verifSerie === null){
              return "Echec, cette série n'éxiste pas";
         }
-        $resultat = $r->setSerieNonFavoris($idSerie,$_SESSION['user']);
-        if($resultat === false){
-            $_SESSION['message'] = "Série ajoutée aux favoris !";
-            header("Location: ?action=display-catalogue");
-            exit();
-        }
-        header("Location: ?action=display-catalogue");
+        $resultat = $r->setSerieTermine($idSerie,$_SESSION['user'],$_GET['episode']);
+        header("Location: .");
         exit();
     }
 }

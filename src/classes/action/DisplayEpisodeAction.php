@@ -22,6 +22,19 @@ class DisplayEpisodeAction extends Action
                 <source src="{$chemin}" type="video/mp4"/>
                 </video>
             HTML;
+            $dernierEp = $r->getDernierEp($idSerie)['codeEpisode'];
+            if($dernierEp && $validEpisode === (int)$dernierEp){
+                $html .= '<div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 20px;">';
+                $html .= "<a href='?action=termineSerie&series_id=$idSerie&episode=$validEpisode' class='btn-view-playlist'>Terminer</a>";
+                $html .= '</div>';
+            }else{
+                $html .= '<div style="width: 100%; display: flex; justify-content: right; margin-top: 20px;">';
+                $html .= "<a href='?action=termineSerie&series_id=$idSerie&episode=$validEpisode' class='btn-view-playlist'>EpisodeSuivant</a>";
+                $html .= '</div>';
+                $html .= '<div style="width: 100%; display: flex; justify-content: left; margin-top: 20px;">';
+                $html .= "<a href='?action=termineSerie&series_id=$idSerie&episode=$validEpisode' class='btn-view-playlist'>Terminer</a>";
+                $html .= '</div>';
+            }
             return $html;
         }
         return "Vous ne pouvez pas regarder sans être connecté";
