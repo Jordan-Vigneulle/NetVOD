@@ -237,20 +237,19 @@ class NetVODRepository
 
     public function addCommentaire($series_id, $commentaire, $user)
     {
-        $query = "SELECT COUNT(*) FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
+        $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['id_serie' => $series_id, 'user' => $user]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $commentaires = $stmt->fetchAll();
         if(empty($commentaires)){
-            $query2 = "INSERT INTO StatutSerie (id,mailUser,commentaire)VALUES(:serieid,:mailuser,:commentaire)";
+            $query2 = "INSERT INTO StatutSerie (id,mailUser,commentaire,datecommentaire)VALUES(:serieid,:mailuser,:commentaire,CURRENT_TIME)";
             $stmt2 = $this->pdo->prepare($query2);
             $stmt2->execute(['serieid' => $series_id, 'mailuser' => $user, 'commentaire' => $commentaire]);
-            $stmt2->execute();
         }else{
-            $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = ?";
+            $update = "UPDATE StatutSerie SET commentaire = :commentaire AND datecommentaire = CURRENT_TIME WHERE id = :id_serie AND StatutSerie.mailUser = :user";
             $stmt = $this->pdo->prepare($update);
-            $stmt->execute();
+            $stmt->execute(['commentaire'=>$commentaire,'id_serie' => $series_id, 'user' => $user]);
         }
 
     }

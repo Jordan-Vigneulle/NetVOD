@@ -44,12 +44,12 @@ class DisplaySeries extends Action
                     $html .= <<<HTML
                         <form method="post" action="?action=display-series&series_id=${intvalserieid}">
                         <div id="titleaction">Commentaire</div>
-                        <input type="nom" name="commentaire" placeholder="Commentaire" required>
+                        <input type="text" name="commentaire" placeholder="Commentaire" required>
                         <input type="submit" value="Publier">
                          </form>
                         HTML;
                 }else{
-                    $commentaire = filter_var($_POST['commentaire'], FILTER_SANITIZE_EMAIL);
+                    $commentaire = filter_var($_POST['commentaire'], FILTER_DEFAULT);
                     $repo = NetVODRepository::getInstance();
                     $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user']);
                     $html .= "<div class='message-info'>Commentaire ajouté.</div>";
