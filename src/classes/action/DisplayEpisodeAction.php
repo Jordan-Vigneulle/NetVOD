@@ -32,7 +32,7 @@ class DisplayEpisodeAction extends Action
                 $html .= "<a href='?action=termineSerie&series_id=$idSerie&episode=$validEpisode' class='btn-view-playlist'>EpisodeSuivant</a>";
                 $html .= '</div>';
                 $html .= '<div style="width: 100%; display: flex; justify-content: left; margin-top: 20px;">';
-                $html .= "<a href='?action=termineSerie&series_id=$idSerie&episode=$validEpisode' class='btn-view-playlist'>Terminer</a>";
+                $html .= "<a href='?action=termineSerie&series_id=$idSerie&episode=$validEpisode' class='btn-view-playlist'>EpisodePrécédent</a>";
                 $html .= '</div>';
             }
             return $html;

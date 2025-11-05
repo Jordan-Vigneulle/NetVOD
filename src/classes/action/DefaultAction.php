@@ -65,7 +65,7 @@ class DefaultAction extends Action{
             $html .= "<br><br>";
             }
             if(empty($seriesTermine)){
-                $html .= "<div class='message-info'>Vous n'avez pas encore de série en cours ? Qu'attendez vous !</div>";
+                $html .= "<div class='message-info'>Vous n'avez pas encore de série Terminée ? Qu'attendez vous !</div>";
             }else{
                 $html .= "<div class='playlist-grid'>";
                 foreach ($seriesTermine as $cat3) {
