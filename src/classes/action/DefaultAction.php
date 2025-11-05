@@ -13,7 +13,7 @@ class DefaultAction extends Action{
             $repo = NetVODRepository::getInstance();
             $user = $repo->getInformation($_SESSION['user']);
             $series = $repo->getSerieFavori($_SESSION['user']);
-            $seriesEncours = $repo->getSerieEnCours($_SESSION['user']);
+            $seriesEnCours = $repo->getSerieEnCours($_SESSION['user']);
             $prenom = $user['nomUser'];
             $html .= "<div class='message-info'>Ravi de vous revoir $prenom</div>";
             $html .= "<div class='playlist-container'>";

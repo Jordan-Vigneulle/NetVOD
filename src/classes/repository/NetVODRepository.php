@@ -181,11 +181,12 @@ class NetVODRepository
 
         public function setSerieFavoris(int $idSerie,string $email): bool{
             $query = "INSERT INTO StatutSerie (id,mailUser,favori)VALUES(?,?,1)";
-            $update = "UPDATE StatutSerie SET favori = 1 WHERE id = ?";
-            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ?";
+            $update = "UPDATE StatutSerie SET favori = 1 WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
 
             $stmt = $this->pdo->prepare($test);
             $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
@@ -198,6 +199,7 @@ class NetVODRepository
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
+                $stmt3->bindParam(2,$email);
                 $stmt3->execute();
                 return $stmt->rowCount() > 0;
             }
@@ -205,11 +207,12 @@ class NetVODRepository
 
         public function setSerieEnCours(int $idSerie,string $email): bool{
             $query = "INSERT INTO StatutSerie (id,mailUser,statut)VALUES(?,?,'en cours')";
-            $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ?";
-            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ?";
+            $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ? and mailUser = ?";
+            $test = "SELECT COUNT(*) FROM StatutSerie WHERE id = ? and mailUser = ?";
 
             $stmt = $this->pdo->prepare($test);
             $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
             $stmt->execute();
             $res = $stmt->fetch(\PDO::FETCH_COLUMN);
 
@@ -222,6 +225,7 @@ class NetVODRepository
             }else{
                 $stmt3 = $this->pdo->prepare($update);
                 $stmt3->bindParam(1,$idSerie);
+                $stmt2->bindParam(2,$email);
                 $stmt3->execute();
                 return $stmt->rowCount() > 0;
             }
@@ -229,7 +233,7 @@ class NetVODRepository
 
         public function getSerieEnCours(string $user): ?array
     {
-        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE mailUser = ? and statut = 'en cours'";
+        $query = "SELECT * FROM StatutSerie inner join serie on serie.id = StatutSerie.id WHERE StatutSerie.mailUser = ? and StatutSerie.statut = 'en cours'";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(1,$user);
         $stmt->execute();
