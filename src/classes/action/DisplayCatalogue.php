@@ -20,8 +20,9 @@ class DisplayCatalogue extends Action{
                         <input type="search" name="recherche" placeholder="Rechercher..." required>
                         <button type="submit">🔍</button>
                     </form>
-                    <div class='playlist-grid'>
                     HTML;
+            $html .= "<br><br>";
+            $html .= "<div class='playlist-grid'>";
                 foreach ($catalogue as $cat) {
                     $id = $cat['id'];
                     $html .= <<<HTML

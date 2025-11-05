@@ -50,7 +50,7 @@ class DefaultAction extends Action{
                 $html .= "<div class='playlist-card'>";
                 $html .= "<h3>{$cat2['titre']}</h3>";
                 $html .= "<div class='card-actions'>";
-                $html .= "<a href='?action=display-series&series_id={$cat2['id']}' class='btn-view-playlist'>Direction episode</a>";
+                $html .= "<a href='?action=lecture-series&episode={$cat2['codeEpisode']}&series_id={$cat2['id']}' class='btn-view-playlist'>Direction episode</a>";
                 $html .= "</div>";
                 $html .= "</div>";
             }
