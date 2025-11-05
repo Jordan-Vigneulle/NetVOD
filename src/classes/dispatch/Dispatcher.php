@@ -18,6 +18,9 @@ class Dispatcher{
     public function run(){
         $html = "";
         switch($this->action){
+            case 'modif-user':
+                $html = (new a\ModificationProfileAction())->execute();
+                break;
             case 'add-user':
                 $html = (new a\AddUserAction())->execute();
                 break;
@@ -66,6 +69,7 @@ class Dispatcher{
             <nav>
                 <ul>
                     <li><a href=".">Accueil</a></li>
+                    <li><a href="?action=modif-user">Modification profil</a></li>
                     <li><a href="?action=add-user">Inscription</a></li>
                     <li><a href="?action=connexion">Connexion</a></li>
                     <li><a href="?action=display-catalogue">Catalogue</a></li>
