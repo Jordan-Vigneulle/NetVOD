@@ -247,7 +247,7 @@ class NetVODRepository
             $stmt2 = $this->pdo->prepare($query2);
             $stmt2->execute(['serieid' => $series_id, 'mailuser' => $user, 'commentaire' => $commentaire]);
         }else{
-            $update = "UPDATE StatutSerie SET commentaire = :commentaire AND datecommentaire = CURRENT_TIME WHERE id = :id_serie AND StatutSerie.mailUser = :user";
+            $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = :id_serie AND StatutSerie.mailUser = :user";
             $stmt = $this->pdo->prepare($update);
             $stmt->execute(['commentaire'=>$commentaire,'id_serie' => $series_id, 'user' => $user]);
         }
