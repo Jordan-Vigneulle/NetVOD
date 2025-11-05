@@ -36,10 +36,8 @@ class DisplayCatalogue extends Action{
                     $id = $cat['id'];
                     $html .= <<<HTML
                             <div class='playlist-card'>
-                                <h3>{$cat['titre']}</h3>
-                                <img src="src/style/img/{$cat['img']}" alt="{$cat['titre']}">
+                                <a href='?action=display-series&series_id={$id}' class="playlist-name"><img src="src/style/img/{$cat['img']}" alt="{$cat['titre']}" width="100%"></a>
                                 <div class='card-actions'>
-                                    <a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>
                             HTML;
                     if(isset($_SESSION['user'])){
                         $html .= "<br><br>";
@@ -58,6 +56,7 @@ class DisplayCatalogue extends Action{
                     $html .= "</div>";
                     $html .= "</div>";
                 }
+                $html .= "</div>";
                 $html .= "</div>";
             $html .= "</div>";
             if (isset($_SESSION['message'])) {
