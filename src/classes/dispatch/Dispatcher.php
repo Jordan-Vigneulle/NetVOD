@@ -36,6 +36,9 @@ class Dispatcher{
             case 'ajouterFavoris':
                 $html = (new a\AddFavorisAction())->execute();
                 break;
+            case 'retirerFavori':
+                $html = (new a\RetirerFavoriAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;

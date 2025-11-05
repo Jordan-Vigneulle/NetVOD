@@ -215,6 +215,15 @@ class NetVODRepository
             }
         }
 
+        public function setSerieNonFavoris(int $idSerie,string $email): bool{
+            $update = "UPDATE StatutSerie SET favori = 0 WHERE id = ? and mailUser = ?";
+            $stmt = $this->pdo->prepare($update);
+            $stmt->bindParam(1,$idSerie);
+            $stmt->bindParam(2,$email);
+            $stmt->execute();
+            return $stmt->rowCount() > 0;
+        }
+
         public function setSerieEnCours(int $idSerie,string $email): bool{
             $query = "INSERT INTO StatutSerie (id,mailUser,statut)VALUES(?,?,'en cours')";
             $update = "UPDATE StatutSerie SET statut = 'en cours' WHERE id = ? and mailUser = ?";
