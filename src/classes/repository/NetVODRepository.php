@@ -235,7 +235,7 @@ class NetVODRepository
         return $data;
     }
 
-    public function addCommentaire($series_id, $commentaire, $user)
+    public function addCommentaire($series_id, $commentaire, $user,$note)
     {
         $query = "SELECT * FROM StatutSerie INNER JOIN Utilisateur ON StatutSerie.mailUser = Utilisateur.mailUser WHERE id = :id_serie AND Utilisateur.mailUser = :user";
         $stmt = $this->pdo->prepare($query);
@@ -251,7 +251,11 @@ class NetVODRepository
             $stmt = $this->pdo->prepare($update);
             $stmt->execute(['commentaire'=>$commentaire,'id_serie' => $series_id, 'user' => $user]);
         }
-
+        if(isset($note)){
+            $notequery = "UPDATE StatutSerie SET note = :note WHERE id = :id_serie AND StatutSerie.mailUser = :user";
+            $stmt = $this->pdo->prepare($notequery);
+            $stmt->execute(['note'=>$note,'id_serie' => $series_id, 'user' => $user]);
+        }
     }
 }
 
