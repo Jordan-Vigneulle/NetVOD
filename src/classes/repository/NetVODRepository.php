@@ -176,7 +176,7 @@ public function catalogueVOD($recherche, $tri) : array {
         if(!$data){
             return null;
         }
-        return $data; 
+        return $data;
 
     }
 
@@ -189,7 +189,7 @@ public function catalogueVOD($recherche, $tri) : array {
         if(!$data){
             return null;
         }
-        return $data; 
+        return $data;
 
     }
 
@@ -331,21 +331,79 @@ public function catalogueVOD($recherche, $tri) : array {
         $stmt->execute(['id_serie' => $series_id, 'user' => $user]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $commentaires = $stmt->fetchAll();
-        if(empty($commentaires)){
+        if (empty($commentaires)) {
             $query2 = "INSERT INTO StatutSerie (id,mailUser,commentaire,datecommentaire)VALUES(:serieid,:mailuser,:commentaire,CURRENT_TIME)";
             $stmt2 = $this->pdo->prepare($query2);
             $stmt2->execute(['serieid' => $series_id, 'mailuser' => $user, 'commentaire' => $commentaire]);
-        }else{
+        } else {
             $update = "UPDATE StatutSerie SET commentaire = :commentaire WHERE id = :id_serie AND StatutSerie.mailUser = :user";
             $stmt = $this->pdo->prepare($update);
-            $stmt->execute(['commentaire'=>$commentaire,'id_serie' => $series_id, 'user' => $user]);
+            $stmt->execute(['commentaire' => $commentaire, 'id_serie' => $series_id, 'user' => $user]);
         }
-        if(isset($note)){
+        if (isset($note)) {
             $notequery = "UPDATE StatutSerie SET note = :note WHERE id = :id_serie AND StatutSerie.mailUser = :user";
             $stmt = $this->pdo->prepare($notequery);
-            $stmt->execute(['note'=>$note,'id_serie' => $series_id, 'user' => $user]);
+            $stmt->execute(['note' => $note, 'id_serie' => $series_id, 'user' => $user]);
         }
     }
+
+        // ----------------------------------  Table Token ----------------------------------
+
+
+        /*
+         * Fonction pour ajouter la ligne token avec l'adresse mail reçu
+         *
+         * @param user, adresse mail de l'user
+         * @param token, token à mettre dans la base de donnée
+         */
+        public function addToken(String $user, String $token) : void {
+            $tok = hash('sha256' ,$token);
+            $queryToken = "Select * from Token where token = :tok";
+            $stmt = $this->pdo->prepare($queryToken);
+            $stmt->execute(['tok' => $tok]);
+            if(!empty($stmt->fetchAll(\PDO::FETCH_ASSOC))){
+                $query = $this->pdo->prepare("Update into Token set token = :token and dateExpi = ADDTIME(now(), '600') where mailUser = :user");
+                $query->execute(['token'=>$tok,'user'=>$user]);
+            }else{
+                $query = $this->pdo->prepare("Insert into Token (mailUser, token, valider, dateExpi) values (:user,:token, 0, ADDTIME(now(), '600'))");
+                $query->execute(['token'=>$tok,'user'=>$user]);
+            }
+        }
+
+        /* Fonction pour rendre un compte actif
+         *
+         * @param token est le token sur lequel l'utilisateur à cliquer
+         */
+        public function verifierToken(string $token){
+            $tok = hash('sha256' ,$token);
+            $queryToken = "Select * from Token where token = :tok and dateExpi < NOW()";
+            $stmt = $this->pdo->prepare($queryToken);
+            $stmt->execute(['tok' => $tok]);
+            if(!empty($stmt->fetchAll(\PDO::FETCH_ASSOC))){
+                $query = $this->pdo->prepare("Update Token set valider = 1 where token = :token");
+                $query->execute(['token'=>$tok]);
+            }
+        }
+        /* Fonction pour voir si un compte est actif
+         *
+         * @param $user est l'adresse mail
+         *
+         * @return vrai si c'est bien actif
+         */
+        public function verifierCompteActif(string $user) : bool{
+
+            $queryToken = "Select * from Token where mailUser = :user and valider = 1";
+            $query = $this->pdo->prepare($queryToken);
+            $stmt = $query->execute(['user'=>$user]);
+            $nbToken = $query->rowCount();
+            if($nbToken > 0){
+                return true;
+            }
+            return false;
+        }
+
+
+
 
     public function getSerieFini(string $user): ?array
     {

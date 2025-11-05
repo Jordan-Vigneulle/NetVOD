@@ -42,6 +42,9 @@ class Dispatcher{
             case 'retirerFavori':
                 $html = (new a\RetirerFavoriAction())->execute();
                 break;
+            case 'double-auth':
+                $html = (new a\DoubleAuthAction())->execute();
+                break;
             case 'termineSerie':
                 $html = (new a\TerminerSerieAction())->execute();
                 break;
@@ -69,7 +72,6 @@ class Dispatcher{
             <nav>
                 <ul>
                     <li><a href=".">Accueil</a></li>
-                    <li><a href="?action=modif-user">Modification profil</a></li>
                     <li><a href="?action=add-user">Inscription</a></li>
                     <li><a href="?action=connexion">Connexion</a></li>
                     <li><a href="?action=display-catalogue">Catalogue</a></li>

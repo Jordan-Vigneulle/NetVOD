@@ -11,6 +11,11 @@ class AuthProvider {
         if (!$hash || !password_verify($passwd2check, $hash)) {
             return false;
         }
+        // Appel de la fonction  pour vérifier si un compte est actif
+        $compteActif = $df->verifierCompteActif($email);
+        if (!$compteActif) {
+            return false;
+        }
         $_SESSION['user'] = $email;
         return true;
     }
@@ -38,7 +43,16 @@ class AuthProvider {
             return "<div class='message-info'>L'Utilisateur possède déjà un compte.</div>";
         }
 
+
         $repo->addUserBD($email,$prenom,$nom,$_POST['password'],$_POST['carteB']);
-        return "<div class='message-info'>Utilisateur ajouté avec succès.</div>";
+
+        // Création du token et ajout du token
+        $token = bin2hex(random_bytes(32));
+        $repo->addToken( $email,$token);
+
+        //On montre le lien
+        $html = "<div class='message-info'>Pour valider votre adresse mail, appuyez sur le lien</div>";
+        $html .= "<a href='?action=double-auth&token={$token}'>Cliquez ici</a>";
+        return $html;
     }
 }
