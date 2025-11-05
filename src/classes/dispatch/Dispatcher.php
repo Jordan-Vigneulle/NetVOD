@@ -42,6 +42,9 @@ class Dispatcher{
             case 'retirerFavori':
                 $html = (new a\RetirerFavoriAction())->execute();
                 break;
+            case 'termineSerie':
+                $html = (new a\TerminerSerieAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;
