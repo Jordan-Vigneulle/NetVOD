@@ -20,6 +20,14 @@ class DisplayCatalogue extends Action{
                         <input type="search" name="recherche" placeholder="Rechercher..." required>
                         <button type="submit" hidden></button>
                     </form>
+                    <form method="get">
+                        <label>Trier par</label>
+                        <label><input type="radio" name="action" value="display-catalogue">Titre</label>
+                        <label><input type="radio" name="action" value="display-catalogue">Annee de sortie</label>
+                        <label><input type="radio" name="action" value="display-catalogue">Date d'ajout</label>
+                        <label><input type="radio" name="action" value="display-catalogue">Nombre d'épisodes</label>
+                        <button type="submit">Appliquer</button>
+                    </form>
                     HTML;
             $html .= "<br><br>";
             $html .= "<div class='playlist-grid'>";
