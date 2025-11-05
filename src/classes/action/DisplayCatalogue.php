@@ -28,6 +28,7 @@ class DisplayCatalogue extends Action{
                     $html .= <<<HTML
                             <div class='playlist-card'>
                                 <h3>{$cat['titre']}</h3>
+                                <img src="src/style/img/{$cat['img']}" alt="{$cat['titre']}">
                                 <div class='card-actions'>
                                     <a href='?action=display-series&series_id={$id}' class='btn-view-playlist'>Information</a>
                             HTML;
