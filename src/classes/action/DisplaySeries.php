@@ -45,7 +45,7 @@ class DisplaySeries extends Action
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     $html .= "<br><br>";
                     $html .= <<<HTML
-                        <form method="post" action="?action=display-series&series_id=${intvalserieid}">
+                        <form method="post" action="?action=display-series&series_id={$intvalserieid}">
                         <div id="titleaction">Commentaire</div>
                         <input type="text" name="commentaire" placeholder="Commentaire" required>
                         <input type="number" name="note" placeholder="Note">
@@ -59,7 +59,8 @@ class DisplaySeries extends Action
                         $repo = NetVODRepository::getInstance();
                         $repo->addCommentaire(intval($_GET['series_id']), $commentaire,$_SESSION['user'],$note);
                         $html .= "<div class='message-info'>Commentaire ajouté.</div>";
-                    }else{
+                        header("Location: ?action=display-series&series_id={$intvalserieid}");
+                }else{
                         $html .= "<div class='message-info'>Note doit être comprise entre 0 à 5.</div>";
                     }
                 }

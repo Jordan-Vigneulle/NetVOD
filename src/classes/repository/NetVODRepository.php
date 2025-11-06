@@ -477,6 +477,27 @@ public function catalogueVOD($recherche, $tri) : array {
         $stmt->execute([$profile_picture, $user]);
     }
 
+
+    public function getUserInfo(string $user)
+    {
+        $query = "SELECT * FROM Utilisateur WHERE mailUser = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$user]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if(!$data){
+            return null;
+        }
+        return $data;
+    }
+
+    public function updateUserInfo(string $user, string $nouveauNom, string $nouveauPrenom): void
+    {
+        $query = "UPDATE Utilisateur SET nomUser = ? , prenomUser = ? WHERE mailUser = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$nouveauNom, $nouveauPrenom,$user]);
+    }
+
+
 }
 
 
