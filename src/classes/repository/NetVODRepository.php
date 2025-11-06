@@ -445,6 +445,11 @@ public function catalogueVOD($recherche, $tri) : array {
             }
         }
 
+
+        /*
+         * Photo de profile
+         *
+         */
     public function getPhotoProfileALL() : array
     {
         $query = "SELECT * FROM PhotoProfil";
@@ -452,6 +457,24 @@ public function catalogueVOD($recherche, $tri) : array {
         $stmt->execute();
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
+    }
+
+    public function getPhotoProfile(string $user) : string{
+            $query = "SELECT img FROM PhotoProfil INNER JOIN Utilisateur on PhotoProfil.idPhoto = Utilisateur.idPhoto where mailUser = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$user]);
+            $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if(!$data){
+                return "src/style/img/profilepicture/inconnu.png";
+            }
+            return "src/style/img/profilepicture/".$data[0]['img'];
+    }
+
+    public function setPhotoProfile(mixed $user, mixed $profile_picture)
+    {
+        $query = "UPDATE Utilisateur SET idPhoto = ? WHERE mailUser = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$profile_picture, $user]);
     }
 
 }

@@ -4,6 +4,8 @@
 namespace iutnc\NetVOD\dispatch;
 
 use iutnc\NetVOD\action as a;
+use iutnc\NetVOD\repository\NetVODRepository;
+
 require_once 'vendor/autoload.php';
 
 
@@ -57,6 +59,12 @@ class Dispatcher{
 
 
     public function renderPage(string $s): void{
+        $repo = NetVODRepository::getInstance();
+        if(isset($_SESSION['user'])){
+           $img = $repo->getPhotoProfile($_SESSION['user']);
+        }else{
+            $img = "src/style/img/profilepicture/inconnu.png";
+        }
         echo <<<Limite
     <!DOCTYPE html>
     <html lang="fr">
@@ -68,7 +76,12 @@ class Dispatcher{
     </head>
     <body>
         <header>
-            <a href="." id="none"><img id="logo" src="src\style\img\logo.png" alt="NetVOD"</a>
+            <div id="top-left">
+                <a href="?action=modif-user"><img src={$img} alt="Photo de profil" id="profile-pic"></a>
+                <a href="." id="none">
+                    <img id="logo" src="src/style/img/logo.png" alt="NetVOD">
+                </a>
+            </div>
             <nav>
                 <ul>
                     <li><a href=".">Accueil</a></li>
@@ -88,6 +101,4 @@ class Dispatcher{
     </html>
     Limite;
     }
-
-
 }
