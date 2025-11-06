@@ -497,6 +497,29 @@ public function catalogueVOD($recherche, $tri) : array {
         $stmt->execute([$nouveauNom, $nouveauPrenom,$user]);
     }
 
+    public function getAllGenres(): array {
+        $query = "SELECT * FROM Genre";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getGenresForUser(string $email): array {
+        $query = "SELECT idGenre FROM GenrePrefere WHERE emailUser = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$email]);
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    public function setGenresForUser(string $email, array $genres): void {
+        $this->pdo->prepare("DELETE FROM GenrePrefere WHERE emailUser = ?")->execute([$email]);
+        $query = "INSERT INTO GenrePrefere (emailUser, idGenre) VALUES (?, ?)";
+        $stmt = $this->pdo->prepare($query);
+        foreach ($genres as $idGenre) {
+            $stmt->execute([$email, $idGenre]);
+        }
+    }
+
+
 
 }
 

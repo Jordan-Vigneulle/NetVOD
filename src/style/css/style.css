@@ -380,6 +380,79 @@ footer p {
     transform: translateY(-2px);
 }
 
+#genre-container {
+    margin-top: 2rem;
+    padding: 20px;
+    background: #1e1e1e;
+    border: 2px solid #00FFED;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 255, 237, 0.2);
+    color: #00FFED;
+}
+
+#genre-container h3 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #00FFED;
+    text-shadow: 0 0 8px rgba(0, 255, 237, 0.6);
+}
+
+#genre-container .genre-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    padding: 10px;
+}
+
+#genre-container label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #282828;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+    color: #f4f4f4;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#genre-container label:hover {
+    background: #333;
+    border-color: #00FFED;
+    box-shadow: 0 0 6px rgba(0, 255, 237, 0.4);
+}
+
+#genre-container input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #00FFED;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+#genre-container input[type="checkbox"]:checked {
+    background-color: #00FFED;
+    box-shadow: 0 0 5px #00FFED;
+}
+
+#genre-container input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: -1px;
+    left: 3px;
+    font-size: 14px;
+    color: #121212;
+    font-weight: bold;
+}
+
 @media (max-width: 600px) {
     .video-controls {
         flex-direction: column;
