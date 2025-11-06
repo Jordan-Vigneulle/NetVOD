@@ -15,7 +15,7 @@ class DefaultAction extends Action{
             $series = $repo->getSerieFavori($_SESSION['user']);
             $seriesEnCours = $repo->getSerieEnCours($_SESSION['user']);
             $seriesTermine = $repo->getSerieFini($_SESSION['user']);
-            $prenom = $user['nomUser'];
+            $prenom = $user['prenomUser'];
             $html .= "<div class='message-info'>Ravi de vous revoir $prenom</div>";
             $html .= "<div class='playlist-container'>";
             $html .= "</div>";
@@ -73,9 +73,19 @@ class DefaultAction extends Action{
             }
             $html .= "</div>";
             $html .= "</div>";
+                $html .= "<div id='auth-buttons'>";
+                $html .= "<a href='?action=connexion' class='btn-auth'>Deconnexion</a>";
+                $html .= "</div>";
             }
         }else{
-            return "<div class='message-info'>Bienvenue sur NetVOD</div>";
+            $html = "<div class='message-info'>";
+            $html .= "<p>Bienvenue sur NetVOD</p>";
+            $html .= "<div id='auth-buttons'>";
+            $html .= "<a href='?action=add-user' class='btn-auth'>Inscription</a>";
+            $html .= "<a href='?action=connexion' class='btn-auth'>Connexion</a>";
+            $html .= "</div>";
+            $html .= "</div>";
+            return $html;
         }
         return $html;
     }

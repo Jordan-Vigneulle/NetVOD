@@ -44,7 +44,7 @@ class ConnectionUserAction extends Action {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 return <<<HTML
                <form method="post" action="?action=connexion">
-               <div id="titleaction">Deconnexion</div>
+               <div id="titleaction">Voulez-vous vraiment vous déconnecter ?</div>
                <br><br>
                <input type="submit" value="Deconnexion">
                </form>

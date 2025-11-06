@@ -399,6 +399,42 @@ footer p {
     text-shadow: 0 0 8px rgba(0, 255, 237, 0.6);
 }
 
+#auth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.btn-auth {
+    display: inline-block;
+    background-color: #009f92;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #00FFED;
+    text-align: center;
+}
+
+.btn-auth:hover {
+    background-color: #00FFED;
+    color: #121212;
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(0, 255, 237, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    #auth-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
 #genre-container .genre-checkboxes {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
