@@ -97,8 +97,12 @@ public function catalogueVOD($recherche, $tri) : array {
         $tri = 'titre';
     }
 
-    $query = "SELECT * FROM serie 
+    $query = "SELECT serie.id, serie.titre, serie.descriptif, serie.img, serie.annee, serie.date_ajout, ROUND(AVG(note),2) as note, COUNT(codeEpisode) as nbepisode
+            FROM serie 
+            INNER JOIN episode ON episode.serie_id = serie.id
+            LEFT JOIN StatutSerie ON StatutSerie.id = serie.id
             WHERE titre LIKE ? OR descriptif LIKE ?
+            GROUP BY serie.id
             ORDER BY $tri";
 
     $stmt = $this->pdo->prepare($query);
@@ -106,6 +110,7 @@ public function catalogueVOD($recherche, $tri) : array {
     $stmt->bindParam(2, $recherche);
     $stmt->execute();
 
+    
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 }
     public function getDesc($series_id): string
@@ -140,7 +145,7 @@ public function catalogueVOD($recherche, $tri) : array {
         $stmt->execute(['idSerie' => $series_id]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $series = $stmt->fetch();
-        return $series['codeEpisode'];
+        return $series['nbEpisode'];
     }
 
     public function getTitre($series_id): ?string
