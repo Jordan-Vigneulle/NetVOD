@@ -53,6 +53,9 @@ class Dispatcher{
             case 'mdpoublie':
                 $html = (new a\MDPOublieAction())->execute();
                 break;
+            case 'changermdp' :
+                $html = (new a\ChangerMdpAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;
