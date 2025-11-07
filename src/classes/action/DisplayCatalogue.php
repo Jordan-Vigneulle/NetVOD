@@ -29,6 +29,8 @@ class DisplayCatalogue extends Action {
             <label><input type="radio" name="tri" value="titre" $checkedTitre>Titre</label>
             <label><input type="radio" name="tri" value="annee" $checkedAnnee>Année de sortie</label>
             <label><input type="radio" name="tri" value="date_ajout" $checkedDate>Date d'ajout</label>
+            <label><input type="radio" name="tri" value="nbepisode" $checkedDate>Nombre épisodes</label>
+            <label><input type="radio" name="tri" value="notemoy" $checkedDate>Note moyenne</label>
             <button type="submit">Appliquer</button>
         </form>
 HTML;
