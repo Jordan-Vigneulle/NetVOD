@@ -50,6 +50,9 @@ class Dispatcher{
             case 'termineSerie':
                 $html = (new a\TerminerSerieAction())->execute();
                 break;
+            case 'mdpoublie':
+                $html = (new a\MDPOublieAction())->execute();
+                break;
             default:
                 $html = (new a\DefaultAction())->execute();
                 break;

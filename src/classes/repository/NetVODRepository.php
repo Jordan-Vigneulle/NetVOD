@@ -197,6 +197,19 @@ public function catalogueVOD($recherche, $tri) : array {
 
 // ----------------------------------  Table utilisateur ----------------------------------
 
+    /*
+     * Fonction pour changer le mot de passe que si la personne a bien apppuyé sur le token
+     */
+    public function updateMDP(String $user,String $mdp)
+    {
+        if ($this->verifierCompteActif($user)) {
+            $nouvmdp = password_hash($mdp, PASSWORD_DEFAULT,['cost' => 12]);
+            $query = "Update Utilisateur set passwd = :mdp  WHERE mailUser = :idUser";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['idUser' => $user, 'mdp' => $nouvmdp]);
+        }
+    }
+
     public function getInformation($idUser) : array{
         $query = "SELECT nomUser,prenomUser FROM Utilisateur WHERE mailUser = :idUser";
         $stmt = $this->pdo->prepare($query);
@@ -362,7 +375,7 @@ public function catalogueVOD($recherche, $tri) : array {
             $stmt = $this->pdo->prepare($queryToken);
             $stmt->execute(['tok' => $tok]);
             if(!empty($stmt->fetchAll(\PDO::FETCH_ASSOC))){
-                $query = $this->pdo->prepare("Update into Token set token = :token and dateExpi = ADDTIME(now(), '600') where mailUser = :user");
+                $query = $this->pdo->prepare("Update into Token set token = :token and dateExpi = ADDTIME(now(), '600') and valider = 0 where mailUser = :user");
                 $query->execute(['token'=>$tok,'user'=>$user]);
             }else{
                 $query = $this->pdo->prepare("Insert into Token (mailUser, token, valider, dateExpi) values (:user,:token, 0, ADDTIME(now(), '600'))");
