@@ -133,6 +133,16 @@ public function catalogueVOD($recherche, $tri) : array {
         return $note;
     }
 
+        public function getNbEpisode($series_id): string
+    {
+        $query = "SELECT serie.id, COUNT(codeEpisode) as nbEpisode FROM serie INNER JOIN episode ON episode.serie_id = serie.id WHERE id = :idSerie GROUP BY serie.id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['idSerie' => $series_id]);
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $series = $stmt->fetch();
+        return $series['codeEpisode'];
+    }
+
     public function getTitre($series_id): ?string
     {
         $query = "SELECT titre FROM serie WHERE id = :idSerie";
