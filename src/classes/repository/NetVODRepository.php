@@ -89,30 +89,39 @@ class NetVODRepository
 
 // ----------------------------------  Table série ----------------------------------
 
-public function catalogueVOD($recherche, $tri) : array {
+public function catalogueVOD($recherche, $tri): array {
     $recherche = "%" . $recherche . "%";
 
-    $allowedSort = ['titre', 'annee', 'date_ajout'];
+    $allowedSort = ['titre', 'annee', 'date_ajout', 'note', 'nbepisode'];
     if (!in_array($tri, $allowedSort)) {
         $tri = 'titre';
     }
 
-    $query = "SELECT serie.id, serie.titre, serie.descriptif, serie.img, serie.annee, serie.date_ajout, ROUND(AVG(note),2) as note, COUNT(codeEpisode) as nbepisode
+    $triCols = [
+        'titre' => 'serie.titre',
+        'annee' => 'serie.annee',
+        'date_ajout' => 'serie.date_ajout',
+        'note' => 'note',
+        'nbepisode' => 'nbepisode'
+    ];
+    $orderBy = $triCols[$tri];
+
+    $query = "SELECT serie.id, serie.titre, serie.descriptif, serie.img, serie.annee, serie.date_ajout, ROUND(AVG(note),2) as note, COUNT(episode.codeEpisode) as nbepisode
             FROM serie 
             INNER JOIN episode ON episode.serie_id = serie.id
             LEFT JOIN StatutSerie ON StatutSerie.id = serie.id
-            WHERE titre LIKE ? OR descriptif LIKE ?
+            WHERE serie.titre LIKE ? OR serie.descriptif LIKE ?
             GROUP BY serie.id
-            ORDER BY $tri";
+            ORDER BY $orderBy";
 
     $stmt = $this->pdo->prepare($query);
     $stmt->bindParam(1, $recherche);
     $stmt->bindParam(2, $recherche);
     $stmt->execute();
 
-    
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 }
+
     public function getDesc($series_id): string
     {
         $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
