@@ -108,6 +108,7 @@ public function catalogueVOD($recherche, $tri) : array {
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 }
+
     public function getDesc($series_id): string
     {
         $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
