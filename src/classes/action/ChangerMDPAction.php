@@ -13,10 +13,14 @@ class ChangerMDPAction extends Action
 
     public function execute(): string
     {
+        $repo = NetVODRepository::getInstance();
         if($_SERVER["REQUEST_METHOD"] == "GET") {
+            // On met le token sur 1 car on appuyé sur le lien
+            $repo-> verifierToken($_GET["token"]);
+
             // Formulaire pour changer le mot de passe
             return <<<HTML
-                <form method="post" action="?action=add-user">
+                <form method="post" action="?action=changermdp&user={$_GET["user"]}">
                     <div id="titleaction">Inscription :</div>
                     <input type="password" name="password" placeholder="Mot de passe*" required>
                     <input type="password" name="password2" placeholder="Confirmez votre mot de passe" required>
@@ -32,7 +36,6 @@ class ChangerMDPAction extends Action
             }
 
             // On change le mot de passe
-            $repo = NetVODRepository::getInstance();
             $repo->updateMDP($_GET['$user'],$_GET['$mdp']);
 
             return <<<HTML

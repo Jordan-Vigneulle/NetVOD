@@ -73,9 +73,6 @@ class DefaultAction extends Action{
             }
             $html .= "</div>";
             $html .= "</div>";
-                $html .= "<div id='auth-buttons'>";
-                $html .= "<a href='?action=connexion' class='btn-auth'>Deconnexion</a>";
-                $html .= "</div>";
             }
         }else{
             $html = "<div class='message-info'>";

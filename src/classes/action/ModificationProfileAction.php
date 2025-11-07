@@ -43,6 +43,10 @@ class ModificationProfileAction extends Action
             $html .= "</div></div><br>";
             $html .= "<button type='submit' name='valider_infos'>Valider</button>";
             $html .= "</form>";
+            $html .= "<br><br>";
+            $html .= "<div id='auth-buttons'>";
+            $html .= "<a href='?action=connexion' class='btn-auth'>Deconnexion</a>";
+            $html .= "</div>";
             if (isset($_POST['valider_infos'])) {
                 $nouveauNom = trim($_POST['nom']);
                 $nouveauPrenom = trim($_POST['prenom']);

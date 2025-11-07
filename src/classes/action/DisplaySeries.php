@@ -42,7 +42,7 @@ class DisplaySeries extends Action
 
                 $repo = NetVODRepository::getInstance();
                 $commentaires = $repo->getCommentaire($_GET['series_id']);
-                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['user'])) {
                     $html .= "<br><br>";
                     $html .= <<<HTML
                         <form method="post" action="?action=display-series&series_id={$intvalserieid}">
@@ -52,7 +52,7 @@ class DisplaySeries extends Action
                         <input type="submit" value="Publier">
                         </form>
                         HTML;
-                }else{
+                }else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])){
                     $commentaire = filter_var($_POST['commentaire'], FILTER_DEFAULT);
                     $note = filter_var($_POST['note'], FILTER_SANITIZE_NUMBER_INT);
                     if($note >= 0 && $note <= 5){

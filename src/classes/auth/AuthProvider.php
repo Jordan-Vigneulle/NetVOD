@@ -44,7 +44,7 @@ class AuthProvider {
         }
 
 
-        $repo->addUserBD($email,$prenom,$nom,$_POST['password'],$_POST['carteB']);
+        $repo->addUserBD($email,$nom,$prenom,$_POST['password'],$_POST['carteB']);
 
         // Création du token et ajout du token
         $token = bin2hex(random_bytes(32));
