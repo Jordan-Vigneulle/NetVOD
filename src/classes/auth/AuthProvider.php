@@ -52,7 +52,10 @@ class AuthProvider {
 
         //On montre le lien
         $html = "<div class='message-info'>Pour valider votre adresse mail, appuyez sur le lien</div>";
-        $html .= "<a href='?action=double-auth&token={$token}'>Cliquez ici</a>";
+        $html .= "
+        <div class='tokenContainer'>
+            <a href='?action=double-auth&token={$token}' id='token'>Cliquez ici</a>
+        </div>";
         return $html;
     }
 }

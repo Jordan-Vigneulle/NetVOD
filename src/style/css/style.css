@@ -495,3 +495,34 @@ footer p {
         gap: 10px;
     }
 }
+
+#token{
+    background-color: #009f92;
+    color: #ffffff;
+    padding: 12px 24px;
+    font-size: clamp(14px, 2vw, 20px);
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    text-align: center;
+    text-decoration: none;
+    min-width: 120px;
+}
+
+#token:hover {
+    background-color: #121212;
+    color: #00FFED;
+}
+
+.tokenContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
