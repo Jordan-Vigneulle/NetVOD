@@ -89,23 +89,76 @@ class NetVODRepository
 
 // ----------------------------------  Table série ----------------------------------
 
-public function catalogueVOD($recherche, $tri) : array {
+public function catalogueVOD($recherche, $tri, $genre,$public): array {
     $recherche = "%" . $recherche . "%";
 
-    $allowedSort = ['titre', 'annee', 'date_ajout'];
+    $allowedSort = ['titre', 'annee', 'date_ajout', 'note', 'nbepisode'];;
     if (!in_array($tri, $allowedSort)) {
         $tri = 'titre';
     }
 
-    $query = "SELECT * FROM serie 
-            WHERE titre LIKE ? OR descriptif LIKE ?
-            ORDER BY $tri";
+    $triCols = [
+        'titre' => 'serie.titre',
+        'annee' => 'serie.annee',
+        'date_ajout' => 'serie.date_ajout',
+        'note' => 'note',
+        'nbepisode' => 'nbepisode'
+    ];
+    $orderBy = $triCols[$tri];
+
+    $query = "SELECT serie.id, serie.titre, serie.descriptif, serie.img, serie.annee, serie.date_ajout, ROUND(AVG(note),2) as note, COUNT(episode.codeEpisode) as nbepisode
+            FROM serie 
+            INNER JOIN episode ON episode.serie_id = serie.id
+            LEFT JOIN StatutSerie ON StatutSerie.id = serie.id
+            INNER JOIN ApourGenre ON StatutSerie.id = ApourGenre.id
+            INNER JOIN Genre ON ApourGenre.idGenre = Genre.idGenre
+            INNER JOIN ApourPublic ON StatutSerie.id = ApourPublic.id
+            INNER JOIN Public ON ApourPublic.idPublic = Public.idPublic
+            WHERE (serie.titre LIKE ? OR serie.descriptif LIKE ?)";
+
+    if(!empty($genre)){
+        $query.= "AND ";
+    }
+    $premier = true;
+    foreach($genre as $g){
+        if($premier === true){
+            $query.= "Genre.libelle = ?";
+            $premier = false;
+        }else{
+             $query.= "OR Genre.libelle = ?";
+        }
+    }
+
+    if(!empty($Public)){
+        $query.= "AND ";
+    }
+    $premier = true;
+    foreach($public as $p){
+        if($premier === true){
+            $query.= "Public.typePublic = ?";
+            $premier = false;
+        }else{
+            $query.= "Public.typePublic = ?";
+        }
+    }
+
+   $query .="GROUP BY serie.id
+            ORDER BY $orderBy";
 
     $stmt = $this->pdo->prepare($query);
     $stmt->bindParam(1, $recherche);
     $stmt->bindParam(2, $recherche);
-    $stmt->execute();
+    $bindIterator = 3;
+    foreach($genre as $g){
+        $stmt->bindParam($bindIterator, $g);
+        $bindIterator ++;
+    }
 
+    foreach($public as $p){
+        $stmt->bindParam($bindIterator, $p);
+        $bindIterator ++;
+    }
+    $stmt->execute();
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 }
 
@@ -145,6 +198,20 @@ public function catalogueVOD($recherche, $tri) : array {
             return null;
         }
         return $series['titre'];
+    }
+
+    public function genererGenre(): ?array{
+        $query = "SELECT libelle FROM Genre";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchALL(\PDO::FETCH_ASSOC);
+    }
+
+    public function genererPublic(): ?array{
+        $query = "SELECT typePublic FROM Public";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchALL(\PDO::FETCH_ASSOC);
     }
 
 

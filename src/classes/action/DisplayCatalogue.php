@@ -11,12 +11,19 @@ class DisplayCatalogue extends Action {
         $repo = NetVODRepository::getInstance();
         $recherche = $_GET['recherche'] ?? '';
         $tri = $_GET['tri'] ?? '';
+        $genre = $_GET['genre'] ?? [];
+        $public = $_GET['public'] ?? [];
 
-        $catalogue = $repo->catalogueVOD($recherche, $tri);
+        $catalogue = $repo->catalogueVOD($recherche, $tri,$genre,$public);
 
         $checkedTitre = ($tri === 'titre') ? 'checked' : '';
         $checkedAnnee = ($tri === 'annee') ? 'checked' : '';
         $checkedDate = ($tri === 'date_ajout') ? 'checked' : '';
+        $checkedEpisodes = ($tri === 'nbepisode') ? 'checked' : '';
+        $checkedNote = ($tri === 'notemoy') ? 'checked' : '';
+
+        $tabGenre = $repo->genererGenre();
+        $tabPublic = $repo->genererPublic();
 
         $html = <<<HTML
         <div class='playlist-container'>
@@ -29,6 +36,30 @@ class DisplayCatalogue extends Action {
             <label><input type="radio" name="tri" value="titre" $checkedTitre>Titre</label>
             <label><input type="radio" name="tri" value="annee" $checkedAnnee>Année de sortie</label>
             <label><input type="radio" name="tri" value="date_ajout" $checkedDate>Date d'ajout</label>
+            <label><input type="radio" name="tri" value="nbepisode" $checkedEpisodes>Nombre épisodes</label>
+            <label><input type="radio" name="tri" value="notemoy" $checkedNote>Note moyenne</label>
+
+
+            <!-- Boutons pour le genre -->
+
+            <label>Filtre genre</label>
+        HTML;
+
+            foreach($tabGenre as $tgenre){
+                $html .= "<label><input type='checkbox' name='genre[]' value='{$tgenre['libelle']}'>{$tgenre['libelle']}</label>";
+            }
+
+            $html .= <<<HTML
+            <!-- Boutons pour le public -->
+
+            <label>Filtre public</label>
+        HTML;
+
+            foreach($tabPublic as $tpublic){
+                $html .= "<label><input type='checkbox' name='public[]' value='{$tpublic['typePublic']}'>{$tpublic['typePublic']}</label>";            
+            }
+
+        $html .= <<<HTML
             <button type="submit">Appliquer</button>
         </form>
 HTML;
