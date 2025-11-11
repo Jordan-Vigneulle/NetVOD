@@ -110,11 +110,11 @@ public function catalogueVOD($recherche, $tri, $genre,$public): array {
             FROM serie 
             INNER JOIN episode ON episode.serie_id = serie.id
             LEFT JOIN StatutSerie ON StatutSerie.id = serie.id
-            INNER JOIN ApourGenre ON StatutSerie.id = ApourGenre.id
-            INNER JOIN Genre ON ApourGenre.idGenre = Genre.idGenre
-            INNER JOIN ApourPublic ON StatutSerie.id = ApourPublic.id
-            INNER JOIN Public ON ApourPublic.idPublic = Public.idPublic
-            WHERE (serie.titre LIKE ? OR serie.descriptif LIKE ?)";
+            LEFT JOIN ApourGenre ON serie.id = ApourGenre.id
+            LEFT JOIN Genre ON ApourGenre.idGenre = Genre.idGenre
+            LEFT JOIN ApourPublic ON serie.id = ApourPublic.id
+            LEFT JOIN Public ON ApourPublic.idPublic = Public.idPublic
+            WHERE (serie.titre LIKE ? OR serie.descriptif LIKE ?) ";
 
     if(!empty($genre)){
         $query.= "AND ";
@@ -122,10 +122,10 @@ public function catalogueVOD($recherche, $tri, $genre,$public): array {
     $premier = true;
     foreach($genre as $g){
         if($premier === true){
-            $query.= "Genre.libelle = ?";
+            $query.= "Genre.libelle = ? ";
             $premier = false;
         }else{
-             $query.= "OR Genre.libelle = ?";
+             $query.= "OR Genre.libelle = ? ";
         }
     }
 
@@ -135,16 +135,15 @@ public function catalogueVOD($recherche, $tri, $genre,$public): array {
     $premier = true;
     foreach($public as $p){
         if($premier === true){
-            $query.= "Public.typePublic = ?";
+            $query.= "Public.typePublic = ? ";
             $premier = false;
         }else{
-            $query.= "Public.typePublic = ?";
+            $query.= "Public.typePublic = ? ";
         }
     }
 
    $query .="GROUP BY serie.id
             ORDER BY $orderBy";
-
     $stmt = $this->pdo->prepare($query);
     $stmt->bindParam(1, $recherche);
     $stmt->bindParam(2, $recherche);
