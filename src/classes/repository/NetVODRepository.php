@@ -599,7 +599,18 @@ public function catalogueVOD($recherche, $tri, $genre,$public): array {
         }
     }
 
-
+    public function SeriesUtilisateurfinishorCours(string $email, int $id): bool
+    {
+        $query = "SELECT statut FROM statutserie WHERE mailUser = ? AND id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$email, $id]);
+        $result = $stmt->fetchColumn();
+        if ($result === false || is_null($result)) {
+            return false;
+        }
+        $statut = trim(strtolower($result));
+        return in_array($statut, ['en cours', 'fini']);
+    }
 
 }
 
