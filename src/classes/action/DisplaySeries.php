@@ -42,6 +42,11 @@ class DisplaySeries extends Action
 
                 $repo = NetVODRepository::getInstance();
                 $commentaires = $repo->getCommentaire($_GET['series_id']);
+                if($repo->dejaCommenter($_SESSION['user'],$intvalserieid) === true){
+                    $messagebouton = "Modifier";
+                }else{
+                    $messagebouton = "Ajouter";
+                }
                 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_SESSION['user']) && $repo->SeriesUtilisateurfinishorCours($_SESSION['user'],$intvalserieid)===true) {
                     $html .= "<br><br>";
                     $html .= <<<HTML
@@ -49,7 +54,7 @@ class DisplaySeries extends Action
                         <div id="titleaction">Commentaire</div>
                         <input type="text" name="commentaire" placeholder="Commentaire" required>
                         <input type="number" name="note" placeholder="Note">
-                        <input type="submit" value="Publier">
+                        <input type="submit" value="$messagebouton">
                         </form>
                         HTML;
                 }else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user'])){
