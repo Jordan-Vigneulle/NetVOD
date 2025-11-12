@@ -9,6 +9,9 @@ class DisplaySeries extends Action
 
     public function execute(): string
     {
+        if(isset($_SESSION['user'])){
+            return "<div class='message-info'>Vous devez vous connecter</div>";
+        }
         $html ="";
         if (isset($_GET['series_id'])) {
             $repo = NetVODRepository::getInstance();

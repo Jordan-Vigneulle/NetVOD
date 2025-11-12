@@ -10,6 +10,9 @@ class DisplayEpisodeAction extends Action
     public function execute(): string
     {
         if(isset($_SESSION['user'])){
+            return "<div class='message-info'>Vous devez vous connecter</div>";
+        }
+        if(isset($_SESSION['user'])){
             $var = filter_var($_GET['episode']);
             $validEpisode = intval($var);
             $r = NetVODRepository::getInstance();
