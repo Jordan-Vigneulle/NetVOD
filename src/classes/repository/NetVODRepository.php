@@ -178,18 +178,26 @@ class NetVODRepository
 
     public function getMoyNote($series_id): string
     {
-        $query = "SELECT ROUND(AVG(note),2) as Note FROM StatutSerie WHERE id = :idSerie";
+        $query = "SELECT ROUND(AVG(note), 2) as Note FROM StatutSerie WHERE id = :idSerie";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idSerie' => $series_id]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $series = $stmt->fetch();
-        if ($series['Note'] != 0) {
-            $note = $series['Note'];
-        } else {
-            $note = 0;
+        $note = $series && $series['Note'] != 0 ? (float)$series['Note'] : 0;
+        $stars = '';
+        $fullStars = floor($note);
+        $totalStars = 5;
+        for ($i = 1; $i <= $totalStars; $i++) {
+            if ($i <= $fullStars) {
+                $stars .= '<span style="color: gold;">★</span>';
+            }else {
+                $stars .= '<span style="color: black;">★</span>';
+            }
         }
-        return $note;
+
+        return $stars;
     }
+
 
     public function getTitre($series_id): ?string
     {
@@ -624,7 +632,7 @@ class NetVODRepository
 
     public function SeriesUtilisateurfinishorCours(string $email, int $id): bool
     {
-        $query = "SELECT statut FROM statutserie WHERE mailUser = ? AND id = ?";
+        $query = "SELECT statut FROM StatutSerie WHERE mailUser = ? AND id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$email, $id]);
         $result = $stmt->fetchColumn();
@@ -637,7 +645,7 @@ class NetVODRepository
 
     public function dejaCommenter(string $email, int $id): bool
     {
-        $query = "SELECT commentaire FROM statutserie WHERE mailUser = ? AND id = ?";
+        $query = "SELECT commentaire FROM StatutSerie WHERE mailUser = ? AND id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$email, $id]);
         $result = $stmt->fetchColumn();
