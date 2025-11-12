@@ -50,7 +50,6 @@ class NetVODRepository
 
     public function checkPasswordStrength(string $pass): bool
     {
-        echo $pass;
         $length = (strlen($pass) >= 10);
         $digit = preg_match("#[\d]#", $pass); // au moins un digit
         $special = preg_match("#[\W]#", $pass); // au moins un car. spécial
@@ -147,7 +146,7 @@ class NetVODRepository
                 $query .= " OR Public.typePublic = ? ";
             }
         }
-        
+
         $query .= "GROUP BY serie.id
             ORDER BY $orderBy";
         $stmt = $this->pdo->prepare($query);
