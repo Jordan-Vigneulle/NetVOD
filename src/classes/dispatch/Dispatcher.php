@@ -67,7 +67,7 @@ class Dispatcher{
     public function renderPage(string $s): void{
         $repo = NetVODRepository::getInstance();
         if(isset($_SESSION['user'])){
-           $img = $repo->getPhotoProfile($_SESSION['user']);
+            $img = $repo->getPhotoProfile($_SESSION['user']);
         }else{
             $img = "src/style/img/profilepicture/inconnu.png";
         }

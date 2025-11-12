@@ -9,13 +9,14 @@ require_once 'vendor/autoload.php';
  * Classe permettant de connecter / déconnecter un utilisateur en session
  *
  * */
-class ConnectionUserAction extends Action {
+class ConnectionUserAction extends Action
+{
 
     public function execute(): string
     {
 
         // vérification si l'utilisateur est déjà connecté
-        if(!isset($_SESSION['user'])){
+        if (!isset($_SESSION['user'])) {
             // Pas connecté
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 // Affichage formulaire
@@ -29,18 +30,17 @@ class ConnectionUserAction extends Action {
                <a href="?action=mdpoublie" class='btn-auth'>Mot de passe oublié</a>
                </form>
             HTML;
-            }
-            else{
+            } else {
                 // Traitement des valeurs
                 $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
                 $a = new AuthProvider();
-                if($a->signin($email, $_POST['password'])){
+                if ($a->signin($email, $_POST['password'])) {
                     return "<div class='message-info'>Bienvenue : $email </div>";
-                }else{
+                } else {
                     return "<div class='message-info'>Utilisateur inconnu</div>";
                 }
             }
-        }else{
+        } else {
             // Si l'utilisateur n'est pas connecté
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 return <<<HTML
@@ -50,8 +50,7 @@ class ConnectionUserAction extends Action {
                <input type="submit" value="Deconnexion">
                </form>
             HTML;
-            }
-            else{
+            } else {
                 // On enlève les objets en session.
                 $_SESSION['user'] = null;
                 return "<div class='message-info'>Déconnexion effectué.</div>";

@@ -16,7 +16,7 @@ class AddUserAction extends Action
     public function execute(): string
     {
 
-        if(isset($_SESSION['user'])){
+        if (isset($_SESSION['user'])) {
             return "<div class='message-info'>Vous êtes déjà connecté</div>";
         }
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -34,8 +34,7 @@ class AddUserAction extends Action
                     <br>
                     <div class='message-info'>*Le mot de passe doit contenir au moins 10 caractères dont minimum un chiffre, une minuscule/majuscule et un caractère spéciale</div>
             HTML;
-        }
-        else{
+        } else {
             return AuthProvider::register();
         }
     }

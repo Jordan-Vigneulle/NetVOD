@@ -55,7 +55,8 @@ class NetVODRepository
         $special = preg_match("#[\W]#", $pass); // au moins un car. spécial
         $lower = preg_match("#[a-z]#", $pass); // au moins une minuscule
         $upper = preg_match("#[A-Z]#", $pass); // au moins une majuscule
-        if (!$length || !$digit || !$special || !$lower || !$upper) return false;
+        if (!$length || !$digit || !$special || !$lower || !$upper)
+            return false;
         return true;
     }
 
@@ -91,13 +92,14 @@ class NetVODRepository
         ]);
     }
 
-// ----------------------------------  Table série ----------------------------------
+    // ----------------------------------  Table série ----------------------------------
 
     public function catalogueVOD($recherche, $tri, $genre, $public): array
     {
         $recherche = "%" . $recherche . "%";
 
-        $allowedSort = ['titre', 'annee', 'date_ajout', 'note', 'nbepisode'];;
+        $allowedSort = ['titre', 'annee', 'date_ajout', 'note', 'nbepisode'];
+        ;
         if (!in_array($tri, $allowedSort)) {
             $tri = 'titre';
         }
@@ -183,19 +185,19 @@ class NetVODRepository
         $stmt->execute(['idSerie' => $series_id]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $series = $stmt->fetch();
-        $note = $series && $series['Note'] != 0 ? (float)$series['Note'] : 0;
+        $note = $series && $series['Note'] != 0 ? (float) $series['Note'] : 0;
         $stars = '';
         $fullStars = floor($note);
         $totalStars = 5;
         for ($i = 1; $i <= $totalStars; $i++) {
             if ($i <= $fullStars) {
                 $stars .= '<span style="color: gold;">★</span>';
-            }else {
+            } else {
                 $stars .= '<span style="color: black;">★</span>';
             }
         }
 
-        return $stars . " (".$series['Note'].")";
+        return $stars . " (" . $series['Note'] . ")";
     }
 
 
@@ -229,7 +231,7 @@ class NetVODRepository
     }
 
 
-// ----------------------------------  Table épisode ----------------------------------
+    // ----------------------------------  Table épisode ----------------------------------
 
     public function episodeSeries($series_id): array
     {
@@ -280,15 +282,15 @@ class NetVODRepository
 
 
 
-// ----------------------------------  Table utilisateur ----------------------------------
+    // ----------------------------------  Table utilisateur ----------------------------------
 
     /*
      * Fonction pour changer le mot de passe que si la personne a bien apppuyé sur le token
      */
-    public function updateMDP(string $user, string $mdp) : string
+    public function updateMDP(string $user, string $mdp): string
     {
         $repo = NetVODRepository::getInstance();
-        if(!$repo->checkPasswordStrength($mdp)){
+        if (!$repo->checkPasswordStrength($mdp)) {
             return "<div class='message-info'>Mot de passe invalide</div>";
         }
         if ($this->verifierCompteActif($user)) {
@@ -312,7 +314,7 @@ class NetVODRepository
     }
 
 
-// ----------------------------------  Table statutSerie ----------------------------------
+    // ----------------------------------  Table statutSerie ----------------------------------
 
     public function getSerieFavori(string $user): array
     {
@@ -474,7 +476,8 @@ class NetVODRepository
             return false;
         }
         $query = $this->pdo->prepare(
-            "INSERT INTO Token (mailUser, token, valider, dateExpi) VALUES (:user, :token, 0, ADDTIME(NOW(), '600')) ON DUPLICATE KEY UPDATE token = :token, valider = 0, dateExpi = ADDTIME(NOW(), '600')");
+            "INSERT INTO Token (mailUser, token, valider, dateExpi) VALUES (:user, :token, 0, ADDTIME(NOW(), '600')) ON DUPLICATE KEY UPDATE token = :token, valider = 0, dateExpi = ADDTIME(NOW(), '600')"
+        );
         $query->execute([
             'user' => $user,
             'token' => $tok

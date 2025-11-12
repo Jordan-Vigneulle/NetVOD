@@ -14,9 +14,9 @@ class ChangerMDPAction extends Action
     public function execute(): string
     {
         $repo = NetVODRepository::getInstance();
-        if($_SERVER["REQUEST_METHOD"] == "GET") {
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
             // On met le token sur 1 car on appuyé sur le lien
-            $repo-> verifierToken($_GET["token"]);
+            $repo->verifierToken($_GET["token"]);
 
             // Formulaire pour changer le mot de passe
             return <<<HTML
@@ -29,14 +29,14 @@ class ChangerMDPAction extends Action
                     <br>
                     <div class='message-info'>*Le mot de passe doit contenir au moins 10 caractères dont minimum un chiffre, une minuscule/majuscule et un caractère spéciale</div>
             HTML;
-        }else{
+        } else {
             // On vérifie si c'est le même mot de passe
             if ($_POST['password'] !== $_POST['password2']) {
                 return "<div class='message-info'>Les Mot de passe ne correspond pas.</div>";
             }
 
             // On change le mot de passe
-            return $repo->updateMDP($_GET['user'],$_POST['password']);
+            return $repo->updateMDP($_GET['user'], $_POST['password']);
 
         }
     }

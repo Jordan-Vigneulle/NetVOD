@@ -4,8 +4,10 @@ namespace iutnc\NetVOD\auth;
 use iutnc\NetVOD\exception\AuthError;
 use iutnc\NetVOD\repository\NetVODRepository;
 
-class AuthProvider {
-    public static function signin(string $email, string $passwd2check): bool {
+class AuthProvider
+{
+    public static function signin(string $email, string $passwd2check): bool
+    {
         $df = NetVODRepository::getInstance();
         $hash = $df->getHashUser($email);
         if (!$hash || !password_verify($passwd2check, $hash)) {
@@ -22,7 +24,7 @@ class AuthProvider {
 
     public static function register(): string
     {
-        if (!isset($_POST['email'],$_POST['nom'],$_POST['prenom'], $_POST['password'], $_POST['carteB'], $_POST['password2'])) {
+        if (!isset($_POST['email'], $_POST['nom'], $_POST['prenom'], $_POST['password'], $_POST['carteB'], $_POST['password2'])) {
             return "<div class='message-info'>Manque de données.</div>";
         }
 
@@ -44,11 +46,11 @@ class AuthProvider {
         }
 
 
-        $repo->addUserBD($email,$nom,$prenom,$_POST['password'],$_POST['carteB']);
+        $repo->addUserBD($email, $nom, $prenom, $_POST['password'], $_POST['carteB']);
 
         // Création du token et ajout du token
         $token = bin2hex(random_bytes(32));
-        $repo->addToken( $email,$token);
+        $repo->addToken($email, $token);
 
         //On montre le lien
         $html = "<div class='message-info'>Pour valider votre adresse mail, appuyez sur le lien</div>";
