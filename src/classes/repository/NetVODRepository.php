@@ -147,7 +147,7 @@ class NetVODRepository
                 $query .= " OR Public.typePublic = ? ";
             }
         }
-        var_dump($query);
+        
         $query .= "GROUP BY serie.id
             ORDER BY $orderBy";
         $stmt = $this->pdo->prepare($query);
