@@ -135,19 +135,19 @@ class NetVODRepository
             }
         }
 
-        if (!empty($Public)) {
-            $query .= "AND ";
+        if (!empty($public)) {
+            $query .= " AND ";
         }
         $premier = true;
         foreach ($public as $p) {
             if ($premier === true) {
-                $query .= "Public.typePublic = ? ";
+                $query .= " Public.typePublic = ? ";
                 $premier = false;
             } else {
-                $query .= "Public.typePublic = ? ";
+                $query .= " OR Public.typePublic = ? ";
             }
         }
-
+        var_dump($query);
         $query .= "GROUP BY serie.id
             ORDER BY $orderBy";
         $stmt = $this->pdo->prepare($query);
