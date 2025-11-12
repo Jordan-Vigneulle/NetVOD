@@ -16,7 +16,6 @@ class DisplayCatalogue extends Action
 
         $catalogue = $repo->catalogueVOD($recherche, $tri, $genre, $public);
 
-        // Tri cochés
         $checkedTitre = ($tri === 'titre') ? 'checked' : '';
         $checkedAnnee = ($tri === 'annee') ? 'checked' : '';
         $checkedDate = ($tri === 'date_ajout') ? 'checked' : '';
@@ -34,8 +33,8 @@ class DisplayCatalogue extends Action
                 <input type="hidden" name="action" value="display-catalogue">
                 <input type="search" name="recherche" placeholder="Rechercher..." value="$recherche">
 
-                <div id="filtres-container">
-                    <!-- Bloc tri -->
+                <div class="playlist-filters-container">
+
                     <div class="filtre-colonne">
                         <label class="titre-section">Trier par</label>
                         <div class="checkbox-group">
@@ -47,41 +46,43 @@ class DisplayCatalogue extends Action
                         </div>
                     </div>
 
-                    <!-- Bloc genre -->
                     <div class="filtre-colonne">
                         <label class="titre-section">Filtre genre</label>
                         <div class="checkbox-group">
         HTML;
 
         foreach ($tabGenre as $tgenre) {
-            $checked = in_array($tgenre['libelle'], $genre) ? 'checked' : '';
-            $html .= "<label><input type='checkbox' name='genre[]' value='{$tgenre['libelle']}' $checked> {$tgenre['libelle']}</label>";
+            $libelle = htmlspecialchars($tgenre['libelle']);
+            $checked = in_array($libelle, $genre) ? 'checked' : '';
+            $html .= "<label><input type='checkbox' name='genre[]' value='{$libelle}' $checked> {$libelle}</label>";
         }
 
         $html .= <<<HTML
                         </div>
                     </div>
 
-                    <!-- Bloc public -->
                     <div class="filtre-colonne">
                         <label class="titre-section">Filtre public</label>
                         <div class="checkbox-group">
         HTML;
 
         foreach ($tabPublic as $tpublic) {
-            $checked = in_array($tpublic['typePublic'], $public) ? 'checked' : '';
-            $html .= "<label><input type='checkbox' name='public[]' value='{$tpublic['typePublic']}' $checked> {$tpublic['typePublic']}</label>";
+            $type = htmlspecialchars($tpublic['typePublic']);
+            $checked = in_array($type, $public) ? 'checked' : '';
+            $html .= "<label><input type='checkbox' name='public[]' value='{$type}' $checked> {$type}</label>";
         }
 
         $html .= <<<HTML
                         </div>
                     </div>
+
                 </div>
 
                 <button type="submit" class="btn-appliquer">Appliquer</button>
             </form>
+            <br>
+            <br>
 
-            <br><br>
             <div class="playlist-grid">
         HTML;
 
@@ -99,7 +100,6 @@ class DisplayCatalogue extends Action
             HTML;
 
             if (isset($_SESSION['user'])) {
-                $html .= "<br><br>";
                 $tabFavoris = $repo->getSerieFavori($_SESSION['user']);
                 $idsFavoris = array_column($tabFavoris, 'id');
 

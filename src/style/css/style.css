@@ -606,3 +606,167 @@ footer p {
     align-items: stretch;
   }
 }
+
+/* FILTERS CSS */
+
+.playlist-filters-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap; /* Toujours sur la même ligne */
+    padding: 20px;
+    background: #1e1e1e;
+    border: 2px solid #00FFED;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 255, 237, 0.2);
+    margin-top: 20px;
+}
+
+.playlist-filters-container .filtre-colonne {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background: #282828;
+    border-radius: 10px;
+    border: 1px solid #00FFED;
+    min-width: 220px; /* Ajustable selon le contenu */
+}
+
+.playlist-filters-container .titre-section {
+    font-weight: bold;
+    color: #00FFED;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.playlist-filters-container .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.playlist-filters-container .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #333;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #f4f4f4;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.playlist-filters-container .checkbox-group label:hover {
+    background: #3e3e3e;
+    border-color: #00FFED;
+}
+
+.playlist-filters-container .checkbox-group input[type="checkbox"],
+.playlist-filters-container .checkbox-group input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #00FFED;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.playlist-filters-container .checkbox-group input[type="checkbox"]:checked,
+.playlist-filters-container .checkbox-group input[type="radio"]:checked {
+    background-color: #00FFED;
+}
+.playlist-filters-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* ✅ les filtres commencent à gauche */
+    align-items: flex-start;
+    gap: 20px;
+    overflow-x: auto; /* ✅ permet le scroll horizontal si nécessaire */
+    white-space: nowrap;
+    padding: 25px 40px; /* ✅ un peu plus d’espace à l’intérieur */
+    background: #1e1e1e;
+    border: 2px solid #00FFED;
+    border-radius: 14px;
+    box-shadow: 0 0 15px rgba(0, 255, 237, 0.25);
+    margin: 30px auto;
+    width: 90%; /* ✅ allonge le rectangle gris */
+    max-width: 1300px; /* ✅ limite la largeur totale sur très grand écran */
+    box-sizing: border-box;
+
+    scrollbar-width: thin;
+    scrollbar-color: #00FFED #1e1e1e;
+}
+
+.playlist-filters-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.playlist-filters-container::-webkit-scrollbar-thumb {
+    background-color: #00FFED;
+    border-radius: 10px;
+}
+
+.filtre-colonne {
+    flex: 0 0 auto;
+    width: 270px; /* ✅ légèrement plus large aussi */
+    background: #282828;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #00FFED;
+    box-shadow: 0 0 6px rgba(0, 255, 237, 0.1);
+    display: inline-block;
+}
+
+
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #333;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #f4f4f4;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group label:hover {
+    background: #3e3e3e;
+    border-color: #00FFED;
+}
+
+.checkbox-group input[type="checkbox"],
+.checkbox-group input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #00FFED;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:checked,
+.checkbox-group input[type="radio"]:checked {
+    background-color: #00FFED;
+}
+
+@media (max-width: 1200px) {
+    #filtres-container {
+        flex-wrap: wrap; /* Empile si l'écran est trop petit */
+    }
+}
