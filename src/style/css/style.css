@@ -86,6 +86,8 @@ form {
     color: #ffffff;
     margin-bottom: 10px;
 }
+
+form input[type="search"],
 form input[type="number"],
 form input[type="nom"],
 form input[type="email"],
@@ -98,6 +100,7 @@ form input[type="file"] {
     font-size: 16px;
     transition: border-color 0.2s;
 }
+form input[type="search"]:focus,
 form input[type="number"]:focus,
 form input[type="nom"]:focus,
 form input[type="email"]:focus,
@@ -525,4 +528,85 @@ footer p {
   margin: 0;
   padding: 0;
   text-align: center;
+}
+/* Conteneur principal des 3 blocs */
+#filtres-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; /* pour s’adapter aux écrans plus petits */
+    gap: 25px;
+    padding: 20px;
+    background: #1e1e1e;
+    border: 2px solid #00FFED;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 255, 237, 0.2);
+    margin-top: 20px;
+}
+
+/* Chaque bloc (tri / genre / public) */
+.filtre-colonne {
+    max-width: 250px;
+    background: #282828;
+    padding: 6px 50px;
+    border-radius: 10px;
+    border: 1px solid #00FFED;
+    box-shadow: 0 0 6px rgba(0, 255, 237, 0.1);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.filtre-colonne > label,
+.titre-section {
+    font-weight: bold;
+    align-self: center;
+    padding: 25px;
+    color: #00FFED;
+    font-size: 1.1rem;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #333;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #f4f4f4;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group label:hover {
+    background: #3e3e3e;
+    border-color: #00FFED;
+}
+.checkbox-group input[type="checkbox"],
+.checkbox-group input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #00FFED;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:checked,
+.checkbox-group input[type="radio"]:checked {
+    background-color: #00FFED;
+}
+@media (max-width: 900px) {
+    #filtres-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
