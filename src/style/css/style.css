@@ -224,7 +224,8 @@ img {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 10px;
+    margin-left: 50px;
+  margin-right: 500px;
   border: 2px solid #ccc;
 }
 
