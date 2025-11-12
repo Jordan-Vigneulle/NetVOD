@@ -195,7 +195,7 @@ class NetVODRepository
             }
         }
 
-        return $stars;
+        return $stars . " (".$series['Note'].")";
     }
 
 

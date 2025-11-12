@@ -18,7 +18,7 @@ class ModificationProfileAction extends Action
                 $html .= "<a href='?action=modif-user&profile_picture={$photo['idPhoto']}'><img src='src/style/img/profilepicture/{$photo['img']}' alt='{$photo['idPhoto']}'></a>";
                 $html .= "</div>";
             }
-            if (isset($_GET['profile_picture'])) {
+            if (isset($_GET['profile_picture']) && $_GET['profile_picture'] != "" && $_GET['profile_picture'] <= 16 && $_GET['profile_picture'] > 0) {
                 $repo->setPhotoProfile($_SESSION['user'], $_GET['profile_picture']);
             }
             $html .= "</div>"; // fin profilepicture-container
