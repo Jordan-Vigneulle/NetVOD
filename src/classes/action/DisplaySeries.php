@@ -20,8 +20,8 @@ class DisplaySeries extends Action
             $moynote = 0;
             $intvalserieid = intval($_GET['series_id']);
             $episodes = $repo->episodeSeries($intvalserieid);
-            $titre = $repo->getTitre($intvalserieid);
-            $desc = $repo->getDesc($intvalserieid);
+            $titre = $repo->getSerie($intvalserieid)['titre'];
+            $desc = $repo->getSerie($intvalserieid)['descriptif'];
             $moynote = $repo->getMoyNote($intvalserieid);
             $html = "<div class='playlist-container'>";
             $html .= "<h2 id='titleaction'>$titre</h2>";

@@ -19,7 +19,7 @@ class TerminerSerieAction extends Action
         }
         $idSerie = filter_var($_GET['series_id'], FILTER_VALIDATE_INT);
         $r = NetVODRepository::getInstance();
-        $verifSerie = $r->getTitre($idSerie);
+        $verifSerie = $r->getSerie($idSerie)['titre'];
         if ($verifSerie === null) {
             return "Echec, cette série n'éxiste pas";
         }

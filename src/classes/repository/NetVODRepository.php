@@ -38,7 +38,14 @@ class NetVODRepository
             'pass' => $conf['password']
         ];
     }
-
+    // ----------------------------------  Table Utilisateur ----------------------------------
+    /**
+     * Fonction pour récupérer le mot de passe d'un utilisateur
+     *
+     * @param string $mail l'email de l'utilisateur
+     *
+     * @return string le mdp
+     */
     public function getHashUser(string $mail): string
     {
         $query = "SELECT passwd FROM Utilisateur WHERE mailUser = :email";
@@ -48,6 +55,17 @@ class NetVODRepository
         return $hash;
     }
 
+    /**
+     * Fonction pour vérifier si le mot de passe correspond à ses critères :
+     * - Plus de dix caractères
+     * - Au moins un chiffre
+     * - Au moins un caractère spécial
+     * - Au moins une miniscule
+     * - Au moins une majuscule
+     *
+     * @param string $pass est le mot de passe
+     * @return bool vrai s'il remplit les conditions
+     */
     public function checkPasswordStrength(string $pass): bool
     {
         $length = (strlen($pass) >= 10);
@@ -60,11 +78,13 @@ class NetVODRepository
         return true;
     }
 
-    public function getPdo()
-    {
-        return $this->pdo;
-    }
-
+    /**
+     * Vérifie si un utilisateur peut se connecter (email non existant)
+     *
+     * @param string $mail L'adresse email à vérifier
+     *
+     * @return bool True si l'email n'existe pas (connexion possible), false si l'email existe déjà
+     */
     public function checkUserConnect(string $mail): bool
     {
         $query = "SELECT * FROM Utilisateur WHERE mailUser = :mail";
@@ -77,6 +97,16 @@ class NetVODRepository
         return true;
     }
 
+    /**
+     * Fonction pour ajouter un nouvel utilisateur
+     *
+     * @param $email
+     * @param $nomuser
+     * @param $prenomuser
+     * @param $password
+     * @param $cartB
+     * @return void
+     */
     public function addUserBD($email, $nomuser, $prenomuser, $password, $cartB)
     {
         $hashC = password_hash($cartB, PASSWORD_DEFAULT);
@@ -94,16 +124,30 @@ class NetVODRepository
 
     // ----------------------------------  Table série ----------------------------------
 
+    /**
+     * Fonction pour rechercher et trier dans le catalogue
+     *
+     * @param string $recherche le mot qu'on va rechercher dans le titre ou le descriptif
+     * @param string $tri la façon qu'on veut trier (alphabétique, date de sortie, date d'ajout, note moyenne ou le nombre d'épisodes)
+     * @param string[] $genre le ou les genres qu'on veut
+     * @param string[] $public le ou les publics qu'on veut
+     * @return array on renvoie la liste des séries trouvées
+     */
+
+
     public function catalogueVOD($recherche, $tri, $genre, $public): array
     {
+        // Pour trouver le mot dans un paragraphe
         $recherche = "%" . $recherche . "%";
 
         $allowedSort = ['titre', 'annee', 'date_ajout', 'note', 'nbepisode'];
-        ;
+
+        // Si aucun tri n'est choisi, on trie par ordre alphabétique
         if (!in_array($tri, $allowedSort)) {
             $tri = 'titre';
         }
 
+        // Les différents tris possibles
         $triCols = [
             'titre' => 'serie.titre',
             'annee' => 'serie.annee',
@@ -123,6 +167,7 @@ class NetVODRepository
             LEFT JOIN Public ON ApourPublic.idPublic = Public.idPublic
             WHERE (serie.titre LIKE ? OR serie.descriptif LIKE ?) ";
 
+        // On met AND au début si il a des genres
         if (!empty($genre)) {
             $query .= "AND ";
         }
@@ -132,10 +177,11 @@ class NetVODRepository
                 $query .= "Genre.libelle = ? ";
                 $premier = false;
             } else {
-                $query .= "OR Genre.libelle = ? ";
+                $query .= "OR Genre.libelle = ? "; // On a choisi de mettre OR, car on trouvait cela plus logique
             }
         }
 
+        // On met AND au début si il a des publics
         if (!empty($public)) {
             $query .= " AND ";
         }
@@ -145,13 +191,16 @@ class NetVODRepository
                 $query .= " Public.typePublic = ? ";
                 $premier = false;
             } else {
-                $query .= " OR Public.typePublic = ? ";
+                $query .= " OR Public.typePublic = ? "; // On a choisi de mettre OR, car on trouvait cela plus logique
             }
         }
 
+        // On ajoute enfin le tri
         $query .= "GROUP BY serie.id
-            ORDER BY $orderBy";
+                    ORDER BY $orderBy";
+
         $stmt = $this->pdo->prepare($query);
+
         $stmt->bindParam(1, $recherche);
         $stmt->bindParam(2, $recherche);
         $bindIterator = 3;
@@ -168,6 +217,12 @@ class NetVODRepository
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Fonction pour récupérer la déscription d'une série
+     *
+     * @param int $series_id est l'id de la série
+     * @return string la déscription
+     */
     public function getDesc($series_id): string
     {
         $query = "SELECT descriptif FROM serie WHERE id = :idSerie";
@@ -178,6 +233,12 @@ class NetVODRepository
         return $series['descriptif'];
     }
 
+    /**
+     * Fonction pour récupérer la note moyenne d'une série
+     *
+     * @param int $series_id est l'id de la série
+     * @return string les étoiles et la note entre parentheses
+     */
     public function getMoyNote($series_id): string
     {
         $query = "SELECT ROUND(AVG(note), 2) as Note FROM StatutSerie WHERE id = :idSerie";
@@ -185,10 +246,13 @@ class NetVODRepository
         $stmt->execute(['idSerie' => $series_id]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $series = $stmt->fetch();
+        
         $note = $series && $series['Note'] != 0 ? (float) $series['Note'] : 0;
         $stars = '';
         $fullStars = floor($note);
         $totalStars = 5;
+
+        // Boucle pour générer les 5 étoiles
         for ($i = 1; $i <= $totalStars; $i++) {
             if ($i <= $fullStars) {
                 $stars .= '<span style="color: gold;">★</span>';
@@ -200,10 +264,15 @@ class NetVODRepository
         return $stars . " (" . $series['Note'] . ")";
     }
 
-
-    public function getTitre($series_id): ?string
+    /**
+     * Fonction pour récupérer tout ce que possède une série
+     *
+     * @param int $series_id est l'id de la série
+     * @return array|null
+     */
+    public function getSerie($series_id): ?array
     {
-        $query = "SELECT titre FROM serie WHERE id = :idSerie";
+        $query = "SELECT * FROM serie WHERE id = :idSerie";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['idSerie' => $series_id]);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
@@ -211,9 +280,17 @@ class NetVODRepository
         if (!$series) {
             return null;
         }
-        return $series['titre'];
+        return $series;
     }
 
+
+    // ----------------------------------  Table Genre ----------------------------------
+
+    /**
+     * Fonction pour avoir tous les genres présents dans la table Genre
+     *
+     * @return array|null
+     */
     public function genererGenre(): ?array
     {
         $query = "SELECT libelle FROM Genre";
@@ -221,7 +298,13 @@ class NetVODRepository
         $stmt->execute();
         return $stmt->fetchALL(\PDO::FETCH_ASSOC);
     }
+    // ----------------------------------  Table Public ----------------------------------
 
+    /**
+     * Fonction pour avoir tous les publics présents dans la table Public
+     *
+     * @return array|null
+     */
     public function genererPublic(): ?array
     {
         $query = "SELECT typePublic FROM Public";
