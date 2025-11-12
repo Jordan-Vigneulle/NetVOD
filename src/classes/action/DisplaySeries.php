@@ -56,7 +56,19 @@ class DisplaySeries extends Action
                         <form method="post" action="?action=display-series&series_id={$intvalserieid}">
                         <div id="titleaction">Commentaire</div>
                         <input type="text" name="commentaire" placeholder="Commentaire" required>
-                        <input type="number" name="note" placeholder="Note">
+                        <label>Note :</label>
+                        <div>
+                        <label><input type="radio" name="note" value="1" required> 1 ⭐</label>
+                        <br>
+                        <label><input type="radio" name="note" value="2"> 2 ⭐⭐</label>
+                        <br>
+                        <label><input type="radio" name="note" value="3"> 3 ⭐⭐⭐</label>
+                        <br>
+                        <label><input type="radio" name="note" value="4"> 4 ⭐⭐⭐⭐</label>
+                        <br>
+                        <label><input type="radio" name="note" value="5"> 5 ⭐⭐⭐⭐⭐</label>
+                        <br>
+                        </div>                        
                         <input type="submit" value="$messagebouton">
                         </form>
                         HTML;
@@ -69,7 +81,7 @@ class DisplaySeries extends Action
                         $html .= "<div class='message-info'>Commentaire ajouté.</div>";
                         header("Location: ?action=display-series&series_id={$intvalserieid}");
                 }else{
-                        $html .= "<div class='message-info'>Note doit être comprise entre 0 à 5.</div>";
+                        header("Location: ?action=display-series&series_id={$intvalserieid}");
                     }
                 }
                 $html .= "<div class='playlist-container'>";
