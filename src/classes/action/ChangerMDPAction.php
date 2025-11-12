@@ -36,11 +36,7 @@ class ChangerMDPAction extends Action
             }
 
             // On change le mot de passe
-            $repo->updateMDP($_GET['user'],$_POST['password']);
-
-            return <<<HTML
-                      <div class='message-info'>Votre mot de passe a bien été changé</div>  
-                      HTML;
+            return $repo->updateMDP($_GET['user'],$_POST['password']);
 
         }
     }
