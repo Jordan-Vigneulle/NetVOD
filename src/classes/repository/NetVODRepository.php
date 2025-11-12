@@ -285,14 +285,20 @@ class NetVODRepository
     /*
      * Fonction pour changer le mot de passe que si la personne a bien apppuyé sur le token
      */
-    public function updateMDP(string $user, string $mdp)
+    public function updateMDP(string $user, string $mdp) : string
     {
+        $repo = NetVODRepository::getInstance();
+        if(!$repo->checkPasswordStrength($mdp)){
+            return "<div class='message-info'>Mot de passe invalide</div>";
+        }
         if ($this->verifierCompteActif($user)) {
             $nouvmdp = password_hash($mdp, PASSWORD_DEFAULT, ['cost' => 12]);
             $query = "Update Utilisateur set passwd = :mdp  WHERE mailUser = :idUser";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(['idUser' => $user, 'mdp' => $nouvmdp]);
+            return "<div class='message-info'>Mot de passe changé</div>";
         }
+        return "<div class='message-info'>Compte invalide</div>";
     }
 
     public function getInformation($idUser): array
@@ -460,20 +466,24 @@ class NetVODRepository
      * @param user, adresse mail de l'user
      * @param token, token à mettre dans la base de donnée
      */
-    public function addToken(string $user, string $token): void
+    public function addToken(string $user, string $token): bool
     {
         $tok = hash('sha256', $token);
-        $queryToken = "Select * from Token where token = :tok";
-        $stmt = $this->pdo->prepare($queryToken);
-        $stmt->execute(['tok' => $tok]);
-        if (!empty($stmt->fetchAll(\PDO::FETCH_ASSOC))) {
-            $query = $this->pdo->prepare("Update into Token set token = :token and dateExpi = ADDTIME(now(), '600') and valider = 0 where mailUser = :user");
-            $query->execute(['token' => $tok, 'user' => $user]);
-        } else {
-            $query = $this->pdo->prepare("Insert into Token (mailUser, token, valider, dateExpi) values (:user,:token, 0, ADDTIME(now(), '600'))");
-            $query->execute(['token' => $tok, 'user' => $user]);
+        $repo = self::getInstance();
+        if (!$repo->verifUser($user)) {
+            return false;
         }
+        $query = $this->pdo->prepare(
+            "INSERT INTO Token (mailUser, token, valider, dateExpi) VALUES (:user, :token, 0, ADDTIME(NOW(), '600')) ON DUPLICATE KEY UPDATE token = :token, valider = 0, dateExpi = ADDTIME(NOW(), '600')");
+        $query->execute([
+            'user' => $user,
+            'token' => $tok
+        ]);
+        return true;
     }
+
+
+
 
     /* Fonction pour rendre un compte actif
      *
@@ -499,7 +509,6 @@ class NetVODRepository
      */
     public function verifierCompteActif(string $user): bool
     {
-
         $queryToken = "Select * from Token where mailUser = :user and valider = 1";
         $query = $this->pdo->prepare($queryToken);
         $stmt = $query->execute(['user' => $user]);
@@ -654,6 +663,18 @@ class NetVODRepository
         }
         $commentaire = trim($result);
         if ($commentaire === '') {
+            return false;
+        }
+        return true;
+    }
+
+    private function verifUser(string $user)
+    {
+        $query = "SELECT mailUser FROM Utilisateur WHERE mailUser = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$user]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (!$data) {
             return false;
         }
         return true;

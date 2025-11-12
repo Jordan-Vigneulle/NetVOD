@@ -31,11 +31,15 @@ class MDPOublieAction extends Action
             // Création du token et update du token
             $repo = NetVODRepository::getInstance();
             $token = bin2hex(random_bytes(32));
-            $repo->addToken( $email,$token);
+            $possible = $repo->addToken( $email,$token);
 
             //On montre le lien
-            $html = "<div class='message-info'>Pour pouvoir changer votre mot de passe, appuyez sur le lien</div>";
-            $html .= "<a href='?action=changermdp&token={$token}&user={$email}'>Cliquez ici</a>";
+            if($possible){
+                $html = "<div class='message-info'>Pour pouvoir changer votre mot de passe, appuyez sur le lien</div>";
+                $html .= "<a href='?action=changermdp&token={$token}&user={$email}' class='btn-auth'>Cliquez ici</a>";
+            }else{
+                $html = "<div class='message-info'>Compte inexistant</div>";
+            }
             return $html;
         }
     }

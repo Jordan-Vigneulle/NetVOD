@@ -26,7 +26,7 @@ class ConnectionUserAction extends Action {
                <input type="password" name="password" placeholder="Mot de passe">
                <br><br>
                <input type="submit" value="Connexion">
-               <a href="?action=mdpoublie">Mot de passe oublié</a>
+               <a href="?action=mdpoublie" class='btn-auth'>Mot de passe oublié</a>
                </form>
             HTML;
             }
