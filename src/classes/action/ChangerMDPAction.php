@@ -13,9 +13,6 @@ class ChangerMDPAction extends Action
 
     public function execute(): string
     {
-        if(!isset($_SESSION['user'])){
-            return "<div class='message-info'>Vous devez vous connecter</div>";
-        }
         $repo = NetVODRepository::getInstance();
         if($_SERVER["REQUEST_METHOD"] == "GET") {
             // On met le token sur 1 car on appuyé sur le lien
