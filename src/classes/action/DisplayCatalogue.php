@@ -7,9 +7,6 @@ use iutnc\NetVOD\repository\NetVODRepository;
 class DisplayCatalogue extends Action {
 
     public function execute(): string {
-        if(!isset($_SESSION['user'])){
-            return "<div class='message-info'>Vous devez vous connecter</div>";
-        }
         $repo = NetVODRepository::getInstance();
         $recherche = $_GET['recherche'] ?? '';
         $tri = $_GET['tri'] ?? '';
