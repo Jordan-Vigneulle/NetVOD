@@ -22,7 +22,7 @@ class ModificationProfileAction extends Action
                 $repo->setPhotoProfile($_SESSION['user'], $_GET['profile_picture']);
             }
             $html .= "</div>"; // fin profilepicture-container
-            $userData = $repo->getUserInfo($_SESSION['user']);
+            $userData = $repo->getUser($_SESSION['user']);
             $nomActuel = htmlspecialchars($userData['nomUser'] ?? '');
             $prenomActuel = htmlspecialchars($userData['prenomUser'] ?? '');
             $html .= "<h2 id='titleaction'>Informations personnelles</h2>";
@@ -31,7 +31,7 @@ class ModificationProfileAction extends Action
             $html .= "<input type='text' id='nom' name='nom' placeholder='Nom' value='{$nomActuel}' required><br><br>";
             $html .= "<label for='prenom'>Prénom :</label><br>";
             $html .= "<input type='text' id='prenom' name='prenom' placeholder='Prénom' value='{$prenomActuel}' required><br><br>";
-            $genres = $repo->getAllGenres();
+            $genres = $repo->genererGenre();
             $genresUser = $repo->getGenresForUser($_SESSION['user']);
             $html .= "<div id='genre-container'>";
             $html .= "<h3>Genres préférés :</h3>";

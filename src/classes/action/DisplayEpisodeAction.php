@@ -16,7 +16,7 @@ class DisplayEpisodeAction extends Action
             $var = filter_var($_GET['episode']);
             $validEpisode = intval($var);
             $r = NetVODRepository::getInstance();
-            $query = $r->getEpisodeSerie($validEpisode);
+            $query = $r->getEpisode($validEpisode)['file'];
             $idSerie = $_GET['series_id'];
             $r->setSerieEnCours($idSerie, $_SESSION['user'], $_GET['episode']);
             $r->avanceeSerie($validEpisode, $idSerie, $_SESSION['user']);
@@ -27,7 +27,7 @@ class DisplayEpisodeAction extends Action
                 </video>
             HTML;
             $dernierEp = (int) $r->getDernierEp($idSerie)['codeEpisode'];
-            $numeroEp = $r->getNumeroEp($validEpisode)['numero'] ?? null;
+            $numeroEp = $r->getEpisode($validEpisode)['numero'] ?? null;
             $html .= '<div class="video-controls">';
             if ($numeroEp !== null && (int) $numeroEp !== 1) {
                 $episodePrec = $validEpisode - 1;

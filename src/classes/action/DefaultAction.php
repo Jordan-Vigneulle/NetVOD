@@ -12,7 +12,7 @@ class DefaultAction extends Action
         $html = "";
         if (isset($_SESSION['user'])) {
             $repo = NetVODRepository::getInstance();
-            $user = $repo->getInformation($_SESSION['user']);
+            $user = $repo->getUser($_SESSION['user']);
             $series = $repo->getSerieFavori($_SESSION['user']);
             $seriesEnCours = $repo->getSerieEnCours($_SESSION['user']);
             $seriesTermine = $repo->getSerieFini($_SESSION['user']);
