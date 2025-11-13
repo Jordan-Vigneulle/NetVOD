@@ -224,15 +224,15 @@ img {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-    margin-left: 50px;
-  margin-right: 500px;
+    margin-left: 20px;
   border: 2px solid #ccc;
 }
 
 #logo {
-  height: 80px;
-  margin-bottom: 15px;
-  place-self: center;
+    left: 50%;
+    height: 80px;
+    margin-bottom: 15px;
+    margin-left: 265%;
 }
 
 .playlist-card {
