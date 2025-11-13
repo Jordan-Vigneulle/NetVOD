@@ -4,6 +4,35 @@ namespace iutnc\NetVOD\repository;
 
 use PDO;
 
+/**
+ * Classe Repository est une classe de regroupement des requêtes SQL
+ *
+ * On fait un rappel des tables présentes dans la base
+ * episode (codeEpisode, numero, titre, resume, duree, file, #serie_id) / PK: codeEpisode
+ * serie (id, titre, descriptif, img, annee, date_ajout) / PK: id
+ * Utilisateur (mailUser, nomUser, prenomUser, passwd, numeroCarte, role, #idPhoto) / PK: mailUser
+ * StatutSerie (#id, #mailUser, commentaire, datecommentaire, favori, statut, #codeEpisode) / PK: id, mailUSer
+ * Genre (idGenre, libelle) / PK: idGenre
+ * ApourGenre (#id, #idGenre) / PK: id, idGenre
+ * Public (idPublic, typePublic) / PK: idPublic
+ * ApourPublic(#id, #idPublic) / PK: id, idPublic
+ * Token (#mailUser, token, valider, dateExpi) / PK: mailUser, token
+ * GenrePrefere (#emailUser, #idGenre) / PK: emailUser, idGenre
+ * PhotoProfil (idPhoto, img) /PK: idPhoto.
+ *
+ * On précise que les hashtags représentent des clés étrangères
+ *
+ * Les requêtes sont regroupés par table dans cette ordre-ci
+ *  - Utilisateur
+ *  - Série
+ *  - Genre
+ *  - Public
+ *  - Episode
+ *  - Statut série
+ *  - Token
+ *  - Photo profil
+ *  - Genre prefere.
+ */
 class NetVODRepository
 {
     private \PDO $pdo;
@@ -38,7 +67,10 @@ class NetVODRepository
             'pass' => $conf['password']
         ];
     }
+
     // ----------------------------------  Table Utilisateur ----------------------------------
+    // On rappelle la table
+    // Utilisateur (mailUser, nomUser, prenomUser, passwd, numeroCarte, role, #idPhoto) / PK: mailUser
 
     /**
      * Fonction pour récupérer toutes les informations d'un utilisateur
@@ -57,8 +89,8 @@ class NetVODRepository
     }
 
     /**
-     * Fonction pour vérifier si le mot de passe correspond à ses critères :
-     * - Plus de dix caractères
+     * Fonction pour vérifier si le mot de passe correspond à ses critères
+     * – Plus de dix caractères
      * - Au moins un chiffre
      * - Au moins un caractère spécial
      * - Au moins une miniscule
@@ -71,7 +103,7 @@ class NetVODRepository
     {
         $length = (strlen($pass) >= 10);
         $digit = preg_match("#[\d]#", $pass); // au moins un digit
-        $special = preg_match("#[\W]#", $pass); // au moins un car. spécial
+        $special = preg_match("#[\W]#", $pass); // Au moins un car. Spécial
         $lower = preg_match("#[a-z]#", $pass); // au moins une minuscule
         $upper = preg_match("#[A-Z]#", $pass); // au moins une majuscule
         if (!$length || !$digit || !$special || !$lower || !$upper)
@@ -182,12 +214,14 @@ class NetVODRepository
         return true;
     }
 
-    // ----------------------------------  Table série ----------------------------------
+    // ---------------------------------- Table série ----------------------------------
+    // On rappelle la table
+    // serie (id, titre, descriptif, img, annee, date_ajout) / PK: id
 
     /**
      * Fonction pour rechercher et trier dans le catalogue
      *
-     * @param string $recherche le mot qu'on va rechercher dans le titre ou le descriptif
+     * @param string $recherche le mot qu'on va rechercher dans le titre ou le descriptif.
      * @param string $tri la façon qu'on veut trier (alphabétique, date de sortie, date d'ajout, note moyenne ou le nombre d'épisodes)
      * @param string[] $genre le ou les genres qu'on veut
      * @param string[] $public le ou les publics qu'on veut
@@ -345,6 +379,7 @@ class NetVODRepository
 
 
     // ----------------------------------  Table Genre ----------------------------------
+    // Genre (idGenre, libelle) / PK: idGenre
 
     /**
      * Fonction pour avoir tous les genres présents dans la table Genre
@@ -359,6 +394,7 @@ class NetVODRepository
         return $stmt->fetchALL(\PDO::FETCH_ASSOC);
     }
     // ----------------------------------  Table Public ----------------------------------
+    // Public (idPublic, typePublic) / PK: idPublic
 
     /**
      * Fonction pour avoir tous les publics présents dans la table Public
@@ -375,7 +411,7 @@ class NetVODRepository
 
 
     // ----------------------------------  Table épisode ----------------------------------
-
+    // episode (codeEpisode, numero, titre, resume, duree, file, #serie_id) / PK: codeEpisode
     /**
      * Fonction pour avoir tous les épisodes d'une series
      *
@@ -434,7 +470,7 @@ class NetVODRepository
     }
 
     // ----------------------------------  Table statutSerie ----------------------------------
-
+    // StatutSerie (#id, #mailUser, commentaire, datecommentaire, favori, statut, #codeEpisode) / PK: id, mailUSer
     /**
      * Fonction pour récupérer toutes les lignes dans la table statuSerie qui sont reliés à un utilisateur et dont la série est en favori
      *
@@ -734,7 +770,7 @@ class NetVODRepository
     }
 
     // ----------------------------------  Table Token ----------------------------------
-
+    // Token (#mailUser, token, valider, dateExpi) / PK: mailUser, token
 
     /**
      * Fonction pour ajouter la ligne token avec l'adresse mail reçu
@@ -796,6 +832,7 @@ class NetVODRepository
     }
 
     // ----------------------------------  Table PhotoProfil ----------------------------------
+    // PhotoProfil (idPhoto, img) /PK: idPhoto
     /**
      * Récupération de toutes les photos de profils
      *
@@ -843,6 +880,7 @@ class NetVODRepository
     }
 
     // ----------------------------------  Table GenrePréférée ----------------------------------
+    // GenrePréfère (#emailUser, #idGenre) / PK: emailUser, idGenre
 
     /**
      * Fonction pour récupérer les genres préférés d'un utilisateur
@@ -859,7 +897,7 @@ class NetVODRepository
     }
 
     /**
-     * Fonction pour ajouter de nouveaux genres préférés à un utiliseaur
+     * Fonction pour ajouter de nouveaux genres préférés à un utilisateur
      *
      * @param string $email, mail de l'utilisateur
      * @param array $genres, liste de nouveaux genres
