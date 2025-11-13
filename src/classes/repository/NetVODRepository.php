@@ -77,15 +77,14 @@ class NetVODRepository
      *
      * @param string $mail l'email de l'utilisateur
      *
-     * @return string le mdp
+     * @return array
      */
-    public function getUser(string $mail): string
+    public function getUser(string $mail): array
     {
         $query = "SELECT * FROM Utilisateur WHERE mailUser = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(['email' => $mail]);
-        $hash = $stmt->fetchColumn();
-        return $hash;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
