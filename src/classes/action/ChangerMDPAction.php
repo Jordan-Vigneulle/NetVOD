@@ -18,8 +18,10 @@ class ChangerMDPAction extends Action
             // On met le token sur 1 car on appuyé sur le lien
             $repo->verifierToken($_GET["token"]);
 
-            // Formulaire pour changer le mot de passe
-            return <<<HTML
+            // On vérifie si on a appuyé sur le token dans les temps
+            if($repo->verifierCompteActif($_GET["user"])){
+                // Formulaire pour changer le mot de passe
+                return <<<HTML
                 <form method="post" action="?action=changermdp&user={$_GET['user']}">
                     <div id="titleaction">Inscription :</div>
                     <input type="password" name="password" placeholder="Mot de passe*" required>
@@ -28,7 +30,13 @@ class ChangerMDPAction extends Action
                 </form>
                     <br>
                     <div class='message-info'>*Le mot de passe doit contenir au moins 10 caractères dont minimum un chiffre, une minuscule/majuscule et un caractère spéciale</div>
-            HTML;
+                HTML;
+            }else{
+               return <<<HTML
+                    <div class='message-info'>Vous n'avez pas appuyez sur le lien dans les temps</div>
+                HTML;
+            }
+
         } else {
             // On vérifie si c'est le même mot de passe
             if ($_POST['password'] !== $_POST['password2']) {

@@ -13,7 +13,7 @@ class AuthProvider
         if (!$hash || !password_verify($passwd2check, $hash)) {
             return false;
         }
-        // Appel de la fonction  pour vérifier si un compte est actif
+        // Appel de la fonction pour vérifier si un compte est actif
         $compteActif = $df->verifierCompteActif($email);
         if (!$compteActif) {
             return false;
