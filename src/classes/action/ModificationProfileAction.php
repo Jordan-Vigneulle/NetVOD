@@ -42,7 +42,7 @@ class ModificationProfileAction extends Action
                 $checked = in_array($genre['idGenre'], $genresUser) ? 'checked' : '';
                 $html .= "<label><input type='checkbox' name='genres[]' value='{$genre['idGenre']}' $checked> {$genre['libelle']}</label>";
             }
-            
+
             $html .= "</div></div><br>";
             $html .= "<button type='submit' name='valider_infos'>Valider</button>";
             $html .= "</form>";

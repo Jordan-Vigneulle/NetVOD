@@ -9,7 +9,7 @@ class AuthProvider
     public static function signin(string $email, string $passwd2check): bool
     {
         $df = NetVODRepository::getInstance();
-        $hash = $df->getUser($email)['passwd'];
+        $hash = $df->getUser($email)[0]['passwd'];
         if (!$hash || !password_verify($passwd2check, $hash)) {
             return false;
         }
