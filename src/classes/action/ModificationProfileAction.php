@@ -36,10 +36,13 @@ class ModificationProfileAction extends Action
             $html .= "<div id='genre-container'>";
             $html .= "<h3>Genres préférés :</h3>";
             $html .= "<div class='genre-checkboxes'>";
+
+
             foreach ($genres as $genre) {
                 $checked = in_array($genre['idGenre'], $genresUser) ? 'checked' : '';
                 $html .= "<label><input type='checkbox' name='genres[]' value='{$genre['idGenre']}' $checked> {$genre['libelle']}</label>";
             }
+            
             $html .= "</div></div><br>";
             $html .= "<button type='submit' name='valider_infos'>Valider</button>";
             $html .= "</form>";

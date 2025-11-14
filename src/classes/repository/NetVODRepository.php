@@ -387,7 +387,7 @@ class NetVODRepository
      */
     public function genererGenre(): ?array
     {
-        $query = "SELECT libelle FROM Genre";
+        $query = "SELECT * FROM Genre";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         return $stmt->fetchALL(\PDO::FETCH_ASSOC);
