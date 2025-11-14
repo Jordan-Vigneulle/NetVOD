@@ -29,14 +29,16 @@ class DisplayCatalogue extends Action
         <div class='playlist-container'>
             <h2 id='titleaction'>Catalogue</h2>
 
-            <form method="get" class="form-catalogue">
+            <form method="get" class="playlist-filters-container">
                 <input type="hidden" name="action" value="display-catalogue">
-                <input type="search" name="recherche" placeholder="Rechercher..." value="$recherche">
 
-                <div class="playlist-filters-container">
+                <input type="search" name="recherche" placeholder="Rechercher..." value="$recherche">
+                <button type="submit" class="btn-appliquer">Appliquer</button>
+
+                <div class="filters-row">
 
                     <div class="filtre-colonne">
-                        <label class="titre-section">Trier par</label>
+                        <div class="titre-section">Trier par</div>
                         <div class="checkbox-group">
                             <label><input type="radio" name="tri" value="titre" $checkedTitre> Titre</label>
                             <label><input type="radio" name="tri" value="annee" $checkedAnnee> Année de sortie</label>
@@ -47,7 +49,7 @@ class DisplayCatalogue extends Action
                     </div>
 
                     <div class="filtre-colonne">
-                        <label class="titre-section">Filtre genre</label>
+                        <div class="titre-section">Filtre genre</div>
                         <div class="checkbox-group">
         HTML;
 
@@ -62,7 +64,7 @@ class DisplayCatalogue extends Action
                     </div>
 
                     <div class="filtre-colonne">
-                        <label class="titre-section">Filtre public</label>
+                        <div class="titre-section">Filtre public</div>
                         <div class="checkbox-group">
         HTML;
 
@@ -77,11 +79,9 @@ class DisplayCatalogue extends Action
                     </div>
 
                 </div>
-
-                <button type="submit" class="btn-appliquer">Appliquer</button>
             </form>
-            <br>
-            <br>
+
+            <br><br>
 
             <div class="playlist-grid">
         HTML;

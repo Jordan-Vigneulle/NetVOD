@@ -8,6 +8,169 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+.playlist-filters-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #1e1e1e;
+    border: 2px solid #00FFED;
+    border-radius: 14px;
+    box-shadow: 0 0 15px rgba(0, 255, 237, 0.25);
+    margin: 30px auto;
+    width: 90%;
+    max-width: 900px;
+}
+
+.playlist-filters-container input[type="search"] {
+    width: 350px;
+    max-width: 90%;
+    padding: 12px 15px;
+    border-radius: 6px;
+    border: 1px solid #00FFED;
+    font-size: 1rem;
+}
+
+.btn-appliquer {
+    background-color: #009f92;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.btn-appliquer:hover {
+    background-color: #00FFED;
+    color: #121212;
+}
+.filtres-groupes {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1100px;
+}
+.filters-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.filtre-colonne .titre-section {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e1e1e;
+    padding: 0 12px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #00f5ff;
+    white-space: nowrap;
+}
+
+.filtre-colonne {
+    background: #282828;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #00ffed;
+    box-shadow: 0 0 6px rgba(0, 255, 237, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+}
+
+.filtre-colonne {
+    width: 200px;
+    background: #282828;
+    padding: 8px 10px 10px 10px;
+    border-radius: 10px;
+    border: 1px solid #00ffed;
+    box-shadow: 0 0 6px rgba(0, 255, 237, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+    padding-top: 40px;
+}
+
+
+
+.titre-haut {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #00f5ff;
+    white-space: nowrap;
+    padding: 0 10px;
+    background-color: #171717;
+}
+
+
+.filtre-colonne .titre-section {
+    font-weight: bold;
+    color: #00FFED;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* Les checkbox */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #333;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    color: #fff;
+}
+.checkbox-group label:hover {
+    background: #3e3e3e;
+    border: 1px solid #00FFED;
+}
+
+.checkbox-group input {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #00FFED;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.checkbox-group input:checked {
+    background-color: #00FFED;
+}
+
+@media (max-width: 700px) {
+    .playlist-filters-container input[type="search"] {
+        width: 90%;
+    }
+    .filtres-groupes {
+        flex-direction: column;
+        align-items: center;
+    }
+}
 
 header h1 {
   text-align: center;
@@ -175,6 +338,7 @@ form button:hover,
   padding: 15px;
   gap: 15px;
 }
+
 
 .playlist-container {
   padding: 15px;
@@ -352,9 +516,8 @@ footer {
   margin-top: auto;
 }
 
-#deefy {
-  width: 30px;
-  height: auto;
+form-catalogue{
+    min-width: 102300px;
 }
 
 footer p {
@@ -562,18 +725,6 @@ footer p {
   margin-top: 20px;
 }
 
-.filtre-colonne {
-  max-width: 250px;
-  background: #282828;
-  padding: 6px 50px;
-  border-radius: 10px;
-  border: 1px solid #00ffed;
-  box-shadow: 0 0 6px rgba(0, 255, 237, 0.1);
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
 .filtre-colonne > label,
 .titre-section {
   font-weight: bold;
@@ -629,168 +780,4 @@ footer p {
     flex-direction: column;
     align-items: stretch;
   }
-}
-
-/* FILTERS CSS */
-
-.playlist-filters-container {
-    display: flex;
-    justify-content: flex-start;
-    gap: 20px;
-    flex-wrap: nowrap; /* Toujours sur la même ligne */
-    padding: 20px;
-    background: #1e1e1e;
-    border: 2px solid #00FFED;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 255, 237, 0.2);
-    margin-top: 20px;
-}
-
-.playlist-filters-container .filtre-colonne {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    background: #282828;
-    border-radius: 10px;
-    border: 1px solid #00FFED;
-    min-width: 220px; /* Ajustable selon le contenu */
-}
-
-.playlist-filters-container .titre-section {
-    font-weight: bold;
-    color: #00FFED;
-    font-size: 1.1rem;
-    text-align: center;
-}
-
-.playlist-filters-container .checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.playlist-filters-container .checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #333;
-    padding: 6px 10px;
-    border-radius: 8px;
-    color: #f4f4f4;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-}
-
-.playlist-filters-container .checkbox-group label:hover {
-    background: #3e3e3e;
-    border-color: #00FFED;
-}
-
-.playlist-filters-container .checkbox-group input[type="checkbox"],
-.playlist-filters-container .checkbox-group input[type="radio"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #00FFED;
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.playlist-filters-container .checkbox-group input[type="checkbox"]:checked,
-.playlist-filters-container .checkbox-group input[type="radio"]:checked {
-    background-color: #00FFED;
-}
-.playlist-filters-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start; /* ✅ les filtres commencent à gauche */
-    align-items: flex-start;
-    gap: 20px;
-    overflow-x: auto; /* ✅ permet le scroll horizontal si nécessaire */
-    white-space: nowrap;
-    padding: 25px 40px; /* ✅ un peu plus d’espace à l’intérieur */
-    background: #1e1e1e;
-    border: 2px solid #00FFED;
-    border-radius: 14px;
-    box-shadow: 0 0 15px rgba(0, 255, 237, 0.25);
-    margin: 30px auto;
-    width: 90%; /* ✅ allonge le rectangle gris */
-    max-width: 1300px; /* ✅ limite la largeur totale sur très grand écran */
-    box-sizing: border-box;
-
-    scrollbar-width: thin;
-    scrollbar-color: #00FFED #1e1e1e;
-}
-
-.playlist-filters-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.playlist-filters-container::-webkit-scrollbar-thumb {
-    background-color: #00FFED;
-    border-radius: 10px;
-}
-
-.filtre-colonne {
-    flex: 0 0 auto;
-    width: 270px; /* ✅ légèrement plus large aussi */
-    background: #282828;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #00FFED;
-    box-shadow: 0 0 6px rgba(0, 255, 237, 0.1);
-    display: inline-block;
-}
-
-
-
-.checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #333;
-    padding: 6px 10px;
-    border-radius: 8px;
-    color: #f4f4f4;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-}
-
-.checkbox-group label:hover {
-    background: #3e3e3e;
-    border-color: #00FFED;
-}
-
-.checkbox-group input[type="checkbox"],
-.checkbox-group input[type="radio"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #00FFED;
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.checkbox-group input[type="checkbox"]:checked,
-.checkbox-group input[type="radio"]:checked {
-    background-color: #00FFED;
-}
-
-@media (max-width: 1200px) {
-    #filtres-container {
-        flex-wrap: wrap; /* Empile si l'écran est trop petit */
-    }
 }
