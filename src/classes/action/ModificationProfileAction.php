@@ -22,7 +22,7 @@ class ModificationProfileAction extends Action
                 $repo->setPhotoProfile($_SESSION['user'], $_GET['profile_picture']);
             }
             $html .= "</div>"; // fin profilepicture-container
-            $userData = $repo->getUser($_SESSION['user']);
+            $userData = $repo->getUser($_SESSION['user'])[0];
             $nomActuel = htmlspecialchars($userData['nomUser'] ?? '');
             $prenomActuel = htmlspecialchars($userData['prenomUser'] ?? '');
             $html .= "<h2 id='titleaction'>Informations personnelles</h2>";
